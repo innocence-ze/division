@@ -36,6 +36,7 @@ public class BlackHole : MonoBehaviour {
             if (Vector3.Distance(c.transform.position, this.transform.position) < 0.1f)
             {
                 c.Health = 0;
+                break;
             }
         }
 

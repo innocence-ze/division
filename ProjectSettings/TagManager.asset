@@ -4,7 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - MapManager
   - Board
+  - Border
+  - Cell
+  - MapManagerUI
+  - BackGround
   layers:
   - Default
   - TransparentFX

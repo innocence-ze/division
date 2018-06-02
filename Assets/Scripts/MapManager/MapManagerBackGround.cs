@@ -75,15 +75,15 @@ public class MapManagerBackGround : MonoBehaviour {
                 case BorderDirection.Down:
                 case BorderDirection.Up:
                 case BorderDirection.UpAndDown:
-                    if (this.border1 != null)
+                    if (border2 != null)
                     {
-                        if (Vector3.Distance(prefab.transform.position, this.border1.transform.position) < 0.3f)
+                        if (Vector3.Distance(prefab.transform.position, border2.transform.position) < 0.3f)
                         {
-                            if (this.border1.GetComponent<SpriteRenderer>() == null)
+                            if (border2.GetComponent<SpriteRenderer>() == null)
                             {
-                                this.border1.AddComponent<SpriteRenderer>();
+                                border2.AddComponent<SpriteRenderer>();
                             }
-                            var sr = this.border1.GetComponent<SpriteRenderer>();
+                            var sr = border2.GetComponent<SpriteRenderer>();
                             if (prefab.GetComponent<SpriteRenderer>() == null)
                             {
                                 sr.sprite = prefab.GetComponentInChildren<SpriteRenderer>().sprite;
@@ -93,7 +93,7 @@ public class MapManagerBackGround : MonoBehaviour {
                         }
                         else
                         {
-                            Destroy(this.border1.GetComponent<SpriteRenderer>());
+                            Destroy(border2.GetComponent<SpriteRenderer>());
                         }
                     }
                     break;
@@ -101,15 +101,15 @@ public class MapManagerBackGround : MonoBehaviour {
                 case BorderDirection.Downleft:
                 case BorderDirection.Upright:
                 case BorderDirection.UprightAndDownleft:
-                    if (this.border2 != null)
+                    if (border3 != null)
                     {
-                        if (Vector3.Distance(prefab.transform.position, this.border2.transform.position) < 0.5f)
+                        if (Vector3.Distance(prefab.transform.position, border3.transform.position) < 0.5f)
                         {
-                            if (this.border2.GetComponent<SpriteRenderer>() == null)
+                            if (border3.GetComponent<SpriteRenderer>() == null)
                             {
-                                this.border2.AddComponent<SpriteRenderer>();
+                                border3.AddComponent<SpriteRenderer>();
                             }
-                            var sr = this.border2.GetComponent<SpriteRenderer>();
+                            var sr = border3.GetComponent<SpriteRenderer>();
                             if (prefab.GetComponent<SpriteRenderer>() == null)
                             {
                                 sr.sprite = prefab.GetComponentInChildren<SpriteRenderer>().sprite;
@@ -119,7 +119,7 @@ public class MapManagerBackGround : MonoBehaviour {
                         }
                         else
                         {
-                            Destroy(this.border2.GetComponent<SpriteRenderer>());
+                            Destroy(border3.GetComponent<SpriteRenderer>());
                         }
                     }
                     break;
@@ -127,15 +127,15 @@ public class MapManagerBackGround : MonoBehaviour {
                 case BorderDirection.Downright:
                 case BorderDirection.Upleft:
                 case BorderDirection.UpleftAndDownright:
-                    if (this.border3 != null)
+                    if (border1 != null)
                     {
-                        if (Vector3.Distance(prefab.transform.position, this.border3.transform.position) < 0.5f)
+                        if (Vector3.Distance(prefab.transform.position, border1.transform.position) < 0.5f)
                         {
-                            if (this.border3.GetComponent<SpriteRenderer>() == null)
+                            if (border1.GetComponent<SpriteRenderer>() == null)
                             {
-                                this.border3.AddComponent<SpriteRenderer>();
+                                border1.AddComponent<SpriteRenderer>();
                             }
-                            var sr = this.border3.GetComponent<SpriteRenderer>();
+                            var sr = border1.GetComponent<SpriteRenderer>();
                             if (prefab.GetComponent<SpriteRenderer>() == null)
                             {
                                 sr.sprite = prefab.GetComponentInChildren<SpriteRenderer>().sprite;
@@ -145,7 +145,7 @@ public class MapManagerBackGround : MonoBehaviour {
                         }
                         else
                         {
-                            Destroy(this.border3.GetComponent<SpriteRenderer>());
+                            Destroy(border1.GetComponent<SpriteRenderer>());
                         }
                     }
                     break;
@@ -184,20 +184,6 @@ public class MapManagerBackGround : MonoBehaviour {
                 case BorderDirection.Down:
                 case BorderDirection.Up:
                 case BorderDirection.UpAndDown:
-                    if (border1 != null)
-                    {
-                        if (Vector3.Distance(prefab.position, border1.transform.position) < 0.5f)
-                        {
-                            prefab.position = border1.transform.position;
-                            Destroy(border1.gameObject);
-                            return true;
-                        }
-                    }
-                    break;
-
-                case BorderDirection.Downleft:
-                case BorderDirection.Upright:
-                case BorderDirection.UprightAndDownleft:
                     if (border2 != null)
                     {
                         if (Vector3.Distance(prefab.position, border2.transform.position) < 0.5f)
@@ -209,15 +195,29 @@ public class MapManagerBackGround : MonoBehaviour {
                     }
                     break;
 
-                case BorderDirection.Downright:
-                case BorderDirection.Upleft:
-                case BorderDirection.UpleftAndDownright:
+                case BorderDirection.Downleft:
+                case BorderDirection.Upright:
+                case BorderDirection.UprightAndDownleft:
                     if (border3 != null)
                     {
                         if (Vector3.Distance(prefab.position, border3.transform.position) < 0.5f)
                         {
                             prefab.position = border3.transform.position;
                             Destroy(border3.gameObject);
+                            return true;
+                        }
+                    }
+                    break;
+
+                case BorderDirection.Downright:
+                case BorderDirection.Upleft:
+                case BorderDirection.UpleftAndDownright:
+                    if (border1 != null)
+                    {
+                        if (Vector3.Distance(prefab.position, border1.transform.position) < 0.5f)
+                        {
+                            prefab.position = border1.transform.position;
+                            Destroy(border1.gameObject);
                             return true;
                         }
                     }

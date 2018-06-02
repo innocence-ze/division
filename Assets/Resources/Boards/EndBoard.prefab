@@ -52,7 +52,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6e3b906278da044ab6551312b2f6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!212 &212098921522004826

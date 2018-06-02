@@ -12,7 +12,7 @@ public enum CellType
 }
 
 
-public class Board : PrefabInMapManager , IPrefab
+public class Board : PrefabInMapManager, IPrefab 
 {
 
     ///两个细胞的间距
@@ -93,6 +93,7 @@ public class Board : PrefabInMapManager , IPrefab
 
     protected void Start ()
     {
+
         if(MapManager.instance == null)
         {
             Init();

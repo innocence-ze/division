@@ -24,17 +24,15 @@ public class MapManager : MonoBehaviour {
         
     }
 
-    public Text text;
-
     public void SaveXML()
     {
         //判断文件及文件夹是否存在，并创建文件夹 
         DirectoryInfo xmlFolder = new DirectoryInfo(Application.dataPath + "/Data/");
         xmlFolder.Create();
-        string xmlPath = Application.dataPath + "/Data/" + text.text + ".xml";
+        string xmlPath = Application.dataPath + "/Data/" + "MapManager.xml";
         for (int i = 1; File.Exists(xmlPath); i++)
         {
-            xmlPath = Application.dataPath + "/Data/" + text.text  + "(" +  i +")"+ ".xml";
+            xmlPath = Application.dataPath + "/Data/" + "MapManager(" +  i +")"+ ".xml";
         }
 
         XmlDocument xmlDoc = new XmlDocument();
@@ -81,7 +79,7 @@ public class MapManager : MonoBehaviour {
     private void ReadXml()
     {
 
-        string xmlPath = Application.dataPath + "/Data/" + text.text + ".xml";
+        string xmlPath = Application.dataPath + "/Data/" + "MapManager.xml";
         if (File.Exists(xmlPath))
         {
             XmlDocument xmlName = new XmlDocument();
@@ -191,7 +189,7 @@ public class MapManager : MonoBehaviour {
                 continue;
             }
         }
-        return true;
+        return isRightMap;
     }
 
     //将RenderTexture保存成一张png图片  

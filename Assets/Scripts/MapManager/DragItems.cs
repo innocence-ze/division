@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 //用于从UI上拖取物体到背景上
 public class DragItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -13,10 +14,17 @@ public class DragItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        Image image = GetComponent<Image>();
         if(Input.GetMouseButton(0))
         {
             //加载图片
-            draggingPrefabs[eventData.pointerId] = Resources.Load<GameObject>(itemType + "/" + this.gameObject.name);
+            draggingPrefabs[eventData.pointerId] = Resources.Load<GameObject>(itemType + "/" + gameObject.name);
+            //if(itemType == "Boards")
+            //{
+            //    draggingPrefabs[eventData.pointerId].GetComponent<ChangeColor>().ChangeRed((int)image.color.r * 255, draggingPrefabs[eventData.pointerId]);
+            //    draggingPrefabs[eventData.pointerId].GetComponent<ChangeColor>().ChangeGreen((int)image.color.g * 255, draggingPrefabs[eventData.pointerId]);
+            //    draggingPrefabs[eventData.pointerId].GetComponent<ChangeColor>().ChangeBlue((int)image.color.b * 255, draggingPrefabs[eventData.pointerId]);
+            //}
             if (draggingPrefabs[eventData.pointerId] != null)
             {
                 draggingPrefabs[eventData.pointerId] = Instantiate(draggingPrefabs[eventData.pointerId]);

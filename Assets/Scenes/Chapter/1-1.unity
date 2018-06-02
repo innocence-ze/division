@@ -310,7 +310,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!4 &99327349
@@ -553,7 +562,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!4 &229938700
@@ -727,7 +745,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!212 &264030821
@@ -1023,6 +1050,21 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114840220133087192, guid: 08b9aff3e9c90ea4382c5e073010c511,
+        type: 2}
+      propertyPath: redRGB
+      value: 255
+      objectReference: {fileID: 0}
+    - target: {fileID: 114840220133087192, guid: 08b9aff3e9c90ea4382c5e073010c511,
+        type: 2}
+      propertyPath: greenRGB
+      value: 255
+      objectReference: {fileID: 0}
+    - target: {fileID: 114840220133087192, guid: 08b9aff3e9c90ea4382c5e073010c511,
+        type: 2}
+      propertyPath: blueRGB
+      value: 255
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 08b9aff3e9c90ea4382c5e073010c511, type: 2}
   m_IsPrefabParent: 0
@@ -1131,7 +1173,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!4 &462934763
@@ -1276,7 +1327,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!4 &623615864
@@ -1593,7 +1653,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!212 &761509616
@@ -1668,7 +1737,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!4 &815201984
@@ -1919,7 +1997,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!4 &877291978
@@ -2020,7 +2107,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!212 &899019326
@@ -2095,7 +2191,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!4 &963998961
@@ -2397,7 +2502,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!212 &1155817634
@@ -2658,7 +2772,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!212 &1339982507
@@ -2937,7 +3060,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!4 &1429539244
@@ -3148,7 +3280,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!4 &1692754943
@@ -3362,7 +3503,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!4 &1840430742
@@ -3466,7 +3616,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!4 &1912318422
@@ -3685,7 +3844,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 133732406b5af9a49a652ccbdbf1a710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nearBoard: []
+  redRGB: 255
+  greenRGB: 255
+  blueRGB: 255
+  nearBoards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isUsed: 0
   cellType: 0
 --- !u!4 &1972683227

@@ -61,11 +61,14 @@ public class PrefabInMapManager : MonoBehaviour
 
     bool havePrefab = false;
     GameObject movePrefab;
-    Vector3 position;
+
 
     //TODO
+    //添加细胞壁
+    Vector3 position;
     void MovePrefab()
-    {       
+    {
+        
         //找到要移动的物体
         if (Input.GetMouseButtonDown(0))
         {           
@@ -82,6 +85,7 @@ public class PrefabInMapManager : MonoBehaviour
                         havePrefab = true;
                         movePrefab = mb.haveCell ? mb.cellPrefab : mb.boardPrefab;
                         position = mb.transform.position;
+                        
                         if(mb.haveCell)
                         {
                             mb.cellPrefab = null;
@@ -109,6 +113,7 @@ public class PrefabInMapManager : MonoBehaviour
 
     //prefab移动的物体
     //TODO
+    //添加细胞壁
     void MovePrefab(GameObject prefab)
     {
 
@@ -132,14 +137,14 @@ public class PrefabInMapManager : MonoBehaviour
     }
 
     //TODO
+    //添加细胞壁
     void OnEndMove(GameObject prefab, Vector3 position)
     {
         bool isOnBG = false;
         foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
         {
             if(Vector3.Distance(mb.transform.position, prefab.transform.position) < 0.5f)
-            {
-                prefab.transform.position = mb.transform.position;
+            {               
                 if (mb.GetComponent<SpriteRenderer>() != null)
                 {
                     Destroy(mb.GetComponent<SpriteRenderer>());
@@ -148,13 +153,16 @@ public class PrefabInMapManager : MonoBehaviour
                 {
                     mb.haveBoard = true;
                     mb.boardPrefab = prefab;
+                    prefab.transform.position = mb.transform.position;
+                    isOnBG = true;
                 }
                 if (mb.haveBoard && !mb.haveCell && movePrefab.tag == "Cell")
                 {
                     mb.haveCell = true;
                     mb.cellPrefab = prefab;
-                }
-                isOnBG = true;
+                    prefab.transform.position = mb.transform.position;
+                    isOnBG = true;
+                }               
                 break;
             }
         }

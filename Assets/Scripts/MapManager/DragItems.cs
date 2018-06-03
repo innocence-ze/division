@@ -19,22 +19,13 @@ public class DragItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             //加载图片
             draggingPrefabs[eventData.pointerId] = Resources.Load<GameObject>(itemType + "/" + gameObject.name);
-            //if(itemType == "Boards")
-            //{
-            //    draggingPrefabs[eventData.pointerId].GetComponent<ChangeColor>().ChangeRed((int)image.color.r * 255, draggingPrefabs[eventData.pointerId]);
-            //    draggingPrefabs[eventData.pointerId].GetComponent<ChangeColor>().ChangeGreen((int)image.color.g * 255, draggingPrefabs[eventData.pointerId]);
-            //    draggingPrefabs[eventData.pointerId].GetComponent<ChangeColor>().ChangeBlue((int)image.color.b * 255, draggingPrefabs[eventData.pointerId]);
-            //}
             if (draggingPrefabs[eventData.pointerId] != null)
             {
                 draggingPrefabs[eventData.pointerId] = Instantiate(draggingPrefabs[eventData.pointerId]);
+                draggingPrefabs[eventData.pointerId].GetComponent<SpriteRenderer>().sprite = image.sprite;
                 draggingPrefabs[eventData.pointerId].name = gameObject.name;
                 draggingPrefabs[eventData.pointerId].transform.SetParent(GameObject.Find(itemType).transform);
                 draggingPrefabs[eventData.pointerId].transform.SetAsLastSibling();
-                //if(itemType != "Borders")
-                //{
-                //    Destroy(draggingPrefabs[eventData.pointerId].GetComponent<MonoBehaviour>());
-                //}
                 SetDraggingPosition(eventData);
             }
         }

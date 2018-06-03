@@ -335,6 +335,7 @@
     <Compile Include="Assets\Scripts\MapManager\MapManager.cs" />
     <Compile Include="Assets\Scripts\MapManager\MapManagerBackGround.cs" />
     <Compile Include="Assets\Scripts\MapManager\MapManagerMain.cs" />
+    <Compile Include="Assets\Scripts\MapManager\MapManagerUI.cs" />
     <Compile Include="Assets\Scripts\MapManager\PrefabInMapManager.cs" />
     <Compile Include="Assets\Scripts\Prefab\Board\Board.cs" />
     <Compile Include="Assets\Scripts\Prefab\Board\EndBoard.cs" />
@@ -345,6 +346,7 @@
     <Compile Include="Assets\Scripts\Prefab\Cell\ICells.cs" />
     <Compile Include="Assets\Scripts\Prefab\Cell\WormHole.cs" />
     <Compile Include="Assets\Scripts\Prefab\Iprefab.cs" />
+    <Compile Include="Assets\Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Demigiant\DOTween\DOTween.XML" />

@@ -2,7 +2,6 @@
 using System.IO;
 using System.Xml;
 using UnityEngine;
-using UnityEngine.UI;
 
 //用于后台储存读取地图数据
 public class MapManager : MonoBehaviour {
@@ -20,16 +19,10 @@ public class MapManager : MonoBehaviour {
         xmlFolder.Create();
     }
 
-    public void SaveXML()
+    public void SaveXML(string xmlName)
     {
-        //判断文件及文件夹是否存在，并创建文件夹 
-        DirectoryInfo xmlFolder = new DirectoryInfo(Application.dataPath + "/Data/");
-        xmlFolder.Create();
-        string xmlPath = Application.dataPath + "/Data/" + "MapManager.xml";
-        for (int i = 1; File.Exists(xmlPath); i++)
-        {
-            xmlPath = Application.dataPath + "/Data/" + "MapManager(" +  i +")"+ ".xml";
-        }
+        //判断文件及文件夹是否存在，并创建文件
+        string xmlPath = Application.dataPath + "/Data/" + xmlName + ".xml";
 
         XmlDocument xmlDoc = new XmlDocument();
 
@@ -45,9 +38,7 @@ public class MapManager : MonoBehaviour {
         {
             //储存一个gameobject 
             if (gameObjectItem.tag == "Board" || gameObjectItem.tag == "Border" || gameObjectItem.tag == "Cell")
-            {
-                Debug.Log("要保存的数据：" + gameObjectItem.name + "类型" + gameObjectItem.tag + "位置：" + gameObjectItem.transform.position.x + "," + gameObjectItem.transform.position.y);
-
+            {               
                 XmlElement xmlItem = xmlDoc.CreateElement("item");
                 xmlItems.AppendChild(xmlItem);
 
@@ -69,7 +60,6 @@ public class MapManager : MonoBehaviour {
             }
         }
         xmlDoc.Save(xmlPath);
-        Debug.Log("创建XML完毕");
     }
 
     public void ReadMap()
@@ -191,16 +181,17 @@ public class MapManager : MonoBehaviour {
     }
 
     //将RenderTexture保存成一张png图片  
-    public bool SaveRenderTextureToPNG(RenderTexture rt, string contents, string pngName)
+    public bool SavePNG(string pngName)
     {
+        RenderTexture rt = new RenderTexture(Camera.main.pixelWidth,Camera.main.pixelHeight,0);
+        Camera.main.targetTexture = rt;
+        Camera.main.Render();
         RenderTexture prev = RenderTexture.active;
         RenderTexture.active = rt;
         Texture2D png = new Texture2D(rt.width, rt.height, TextureFormat.ARGB32, false);
         png.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
         byte[] bytes = png.EncodeToPNG();
-        if (!Directory.Exists(contents))
-            Directory.CreateDirectory(contents);
-        FileStream file = File.Open(contents + "/" + pngName + ".png", FileMode.Create);
+        FileStream file = File.Open(Application.dataPath + "/Data/" + pngName + ".png", FileMode.Create);
         BinaryWriter writer = new BinaryWriter(file);
         writer.Write(bytes);
         file.Close();

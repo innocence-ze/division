@@ -59,18 +59,22 @@ public class MapManagerUI : MonoBehaviour {
         targetCanvas.SetActive(true);
     }
 
+    //TODO后台添加
     public void OnReturnMain()
     {
         GetCurrentCanvas();
         currentCanvas.SetActive(false);
-        var sprite = Resources.Load<Sprite>("Material/MapManagerBackground");
+        var sprite = Resources.Load<Sprite>("MapManager/MapManagerBackground");
         GameObject background = GameObject.Find("BackGround");
         background.GetComponent<Image>().sprite = sprite;
+        MainCanvas.SetActive(true);
     }
 
+    //TODO后台添加
     public void OnPlay()
     {
         GetCurrentCanvas();
+        //获取文件名字
         if(currentCanvas.name == "Main")
         {
             fileName = EventSystem.current.currentSelectedGameObject.transform.parent.name;
@@ -79,6 +83,7 @@ public class MapManagerUI : MonoBehaviour {
 
     public void OnBeginEdit()
     {
+        //设置文件名字
         currentButton = EventSystem.current.currentSelectedGameObject;
         if(currentButton.name == "Edit")
         {
@@ -95,13 +100,20 @@ public class MapManagerUI : MonoBehaviour {
         BackGroundCanvas.SetActive(true);
     }
 
+    //TODO后台添加
     public void DelMap()
     {
         currentButton = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;
         fileName = currentButton.name;
+        currentButton.GetComponent<Button>().enabled = true;
+        for (int i = 0; i < 3; i++)
+        {
+            currentButton.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        currentButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("MapManager/AddMap");
     }
 
-    //获得当前的场景
+    //获得当前的UI画布
     void GetCurrentCanvas()
     {
         currentCanvas = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;

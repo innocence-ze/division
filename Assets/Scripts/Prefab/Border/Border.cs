@@ -19,7 +19,7 @@ public enum BorderDirection//可以通过的方向
 }
 
 
-public class Border : PrefabInMapManager ,IPrefab
+public class Border : MapManagerPrefab ,IPrefab
 {
 
     public Board[] nearBoards = new Board[2];

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,7 +9,9 @@ public class DragItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     private Dictionary<int, GameObject> draggingPrefabs = new Dictionary<int, GameObject>();
 
     //获取Resources文件夹下的子文件夹
-    public string itemType;
+    [SerializeField]
+    [Header("Resources子文件夹名")]
+    private string itemType;
 
     public void OnBeginDrag(PointerEventData eventData)
     {

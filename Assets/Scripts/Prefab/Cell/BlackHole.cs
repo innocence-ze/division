@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlackHole : PrefabInMapManager,ICells ,IPrefab{
+public class BlackHole : MapManagerPrefab,ICells ,IPrefab{
 
     [SerializeField]private Board landedBoard;
 

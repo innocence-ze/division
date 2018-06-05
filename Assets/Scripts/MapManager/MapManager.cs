@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using UnityEngine;
@@ -10,18 +9,15 @@ public class MapManager : MonoBehaviour {
 
     [HideInInspector]static public MapManager instance;
 
-    [HideInInspector] public List<GameObject> gamePrefabs = new List<GameObject>();
-
+    private List<GameObject> gamePrefabs = new List<GameObject>();
 
     private void Start()
     {
         MapManagerUI = GameObject.FindGameObjectsWithTag("MapManager");
         instance = this;
-    }
-
-    private void Update()
-    {        
-        
+        //创建后台文件夹
+        DirectoryInfo xmlFolder = new DirectoryInfo(Application.dataPath + "/Data/");
+        xmlFolder.Create();
     }
 
     public void SaveXML()
@@ -76,7 +72,31 @@ public class MapManager : MonoBehaviour {
         Debug.Log("创建XML完毕");
     }
 
-    private void ReadXml()
+    public void ReadMap()
+    {
+        Init("Border");
+        Init("Board");
+        Init("Cell");
+
+        GameObject[] gameObjectItems = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+        foreach (GameObject gameObjectItem in gameObjectItems)
+        {
+            //储存一个gameobject 
+            if (gameObjectItem.tag != "Board" || gameObjectItem.tag != "Border" || gameObjectItem.tag != "Cell" || gameObjectItem.tag != "BackGround" || gameObjectItem.tag != "MainCamera")
+            {
+                {
+                    gameObjectItem.SetActive(false);
+                }
+            }
+        }
+
+        var gM = Resources.Load("GameManager");
+        GameObject gameManager = Instantiate(gM) as GameObject;
+        gameManager.name = "GameManager";
+        ReadXML();
+    }
+
+    private void ReadXML()
     {
 
         string xmlPath = Application.dataPath + "/Data/" + "MapManager.xml";
@@ -105,6 +125,7 @@ public class MapManager : MonoBehaviour {
         }
     }
 
+    //初始化三个空物体
     private void Init(string type)
     {
         GameObject s = new GameObject(type + "s")
@@ -114,36 +135,13 @@ public class MapManager : MonoBehaviour {
         s.transform.position = new Vector3(0, 0, 0);
     }
 
-    GameObject[] MapManagerUI;
+    private GameObject[] MapManagerUI;
 
-    public void ReadMap()
-    {
-        Init("Border");
-        Init("Board");
-        Init("Cell");
-
-        GameObject[] gameObjectItems = FindObjectsOfType(typeof(GameObject)) as GameObject[];
-        foreach (GameObject gameObjectItem in gameObjectItems)
-        {
-            //储存一个gameobject 
-            if (gameObjectItem.tag != "Board" || gameObjectItem.tag != "Border" || gameObjectItem.tag != "Cell" || gameObjectItem.tag != "BackGround" ||  gameObjectItem.tag != "MainCamera")
-            {
-                {
-                    gameObjectItem.SetActive(false);
-                }
-            }
-        }
-
-        var gM = Resources.Load("GameManager");
-        GameObject gameManager = Instantiate(gM) as GameObject;
-        gameManager.name = "GameManager";
-        ReadXml();
-    }
-
-    public Camera shotCamera;
+    [SerializeField]
+    [Header("截屏用的相机")]
+    private Camera shotCamera;
     public void Play()
-    {
-        
+    {        
         if(IsRightMap())
         {            
             foreach (GameObject m in MapManagerUI)

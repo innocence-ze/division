@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Cell : PrefabInMapManager ,ICells,IPrefab
+public class Cell : MapManagerPrefab ,ICells,IPrefab
 {
     private static int MaxHealth = 2;
 

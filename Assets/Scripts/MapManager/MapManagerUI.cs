@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.EventSystems;
+﻿using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,15 +21,20 @@ public class MapManagerUI : MonoBehaviour {
     [SerializeField]
     [Header("【选择背景的UI】")]
     private GameObject BackGroundCanvas;
+    [SerializeField]
+    [Header("【主界面的UI】")]
+    private GameObject MainCanvas;
 
     //当前的场景
     GameObject currentCanvas;
+    GameObject currentButton;
+    string fileName;
 
     //选择地板场景完成
     public void OnChangeBoardColor(string boardType)
     {
         BoardCanvas.SetActive(true);
-        for(int i = 1; i < BoardCanvas.transform.childCount - 1; i++)
+        for(int i = 1; i < 6; i++)
         {
             BoardCanvas.transform.GetChild(i).GetComponent<Image>().sprite = Resources.Load<Sprite>("MapManager/Board/" + boardType + "." + i); 
         }
@@ -49,11 +52,53 @@ public class MapManagerUI : MonoBehaviour {
     }
 
     //场景切换时（选择细胞边界等只改变底部状态栏的场景）
-    public void OnChangeType(GameObject targetCanvas)
+    public void OnChangeCanvas(GameObject targetCanvas)
     {
         GetCurrentCanvas();
         currentCanvas.SetActive(false);
         targetCanvas.SetActive(true);
+    }
+
+    public void OnReturnMain()
+    {
+        GetCurrentCanvas();
+        currentCanvas.SetActive(false);
+        var sprite = Resources.Load<Sprite>("Material/MapManagerBackground");
+        GameObject background = GameObject.Find("BackGround");
+        background.GetComponent<Image>().sprite = sprite;
+    }
+
+    public void OnPlay()
+    {
+        GetCurrentCanvas();
+        if(currentCanvas.name == "Main")
+        {
+            fileName = EventSystem.current.currentSelectedGameObject.transform.parent.name;
+        }
+    }
+
+    public void OnBeginEdit()
+    {
+        currentButton = EventSystem.current.currentSelectedGameObject;
+        if(currentButton.name == "Edit")
+        {
+            currentButton = currentButton.transform.parent.gameObject;
+        }
+        fileName = currentButton.name;
+        for(int i = 0; i < 3; i++)
+        {
+            currentButton.transform.GetChild(i).gameObject.SetActive(true);
+        }
+        currentButton.GetComponent<Button>().enabled = false;
+        GetCurrentCanvas();
+        currentCanvas.SetActive(false);
+        BackGroundCanvas.SetActive(true);
+    }
+
+    public void DelMap()
+    {
+        currentButton = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;
+        fileName = currentButton.name;
     }
 
     //获得当前的场景

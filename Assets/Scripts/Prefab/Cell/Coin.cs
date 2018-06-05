@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coin : PrefabInMapManager,ICells , IPrefab
+public class Coin : MapManagerPrefab,ICells , IPrefab
 {
     [SerializeField]private Board landedBoard;
     public static Coin coin;

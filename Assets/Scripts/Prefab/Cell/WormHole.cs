@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WormHole : PrefabInMapManager ,ICells ,IPrefab {
+public class WormHole : MapManagerPrefab ,ICells ,IPrefab {
 
     private Board landedBoard;
 

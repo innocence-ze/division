@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 //用于储存背景信息，设置锚点
@@ -12,7 +11,7 @@ public class MapManagerBackGround : MonoBehaviour {
 
     public bool haveBoard = false;
     public bool haveCell = false;
-
+    
     public GameObject border1;
     public GameObject border2;
     public GameObject border3;

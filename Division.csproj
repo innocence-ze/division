@@ -334,9 +334,8 @@
     <Compile Include="Assets\Scripts\MapManager\DragItems.cs" />
     <Compile Include="Assets\Scripts\MapManager\MapManager.cs" />
     <Compile Include="Assets\Scripts\MapManager\MapManagerBackGround.cs" />
-    <Compile Include="Assets\Scripts\MapManager\MapManagerMain.cs" />
+    <Compile Include="Assets\Scripts\MapManager\MapManagerPrefab.cs" />
     <Compile Include="Assets\Scripts\MapManager\MapManagerUI.cs" />
-    <Compile Include="Assets\Scripts\MapManager\PrefabInMapManager.cs" />
     <Compile Include="Assets\Scripts\Prefab\Board\Board.cs" />
     <Compile Include="Assets\Scripts\Prefab\Board\EndBoard.cs" />
     <Compile Include="Assets\Scripts\Prefab\Border\Border.cs" />

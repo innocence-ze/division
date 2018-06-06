@@ -1,0 +1,34 @@
+<data>
+  <items>
+    <item>
+      <name>Board</name>
+      <tag>Board</tag>
+      <positionX>0.866</positionX>
+      <positionY>-0.5</positionY>
+    </item>
+    <item>
+      <name>Board</name>
+      <tag>Board</tag>
+      <positionX>-0.866</positionX>
+      <positionY>-0.5</positionY>
+    </item>
+    <item>
+      <name>Board</name>
+      <tag>Board</tag>
+      <positionX>0</positionX>
+      <positionY>-1</positionY>
+    </item>
+    <item>
+      <name>Board</name>
+      <tag>Board</tag>
+      <positionX>0</positionX>
+      <positionY>1</positionY>
+    </item>
+    <item>
+      <name>Board</name>
+      <tag>Board</tag>
+      <positionX>0</positionX>
+      <positionY>0</positionY>
+    </item>
+  </items>
+</data>

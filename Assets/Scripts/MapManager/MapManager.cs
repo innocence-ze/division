@@ -19,10 +19,10 @@ public class MapManager : MonoBehaviour {
         xmlFolder.Create();
     }
 
-    public void SaveXML(string xmlName)
+    public void SaveXML(string fileName)
     {
         //判断文件及文件夹是否存在，并创建文件
-        string xmlPath = Application.dataPath + "/Data/" + xmlName + ".xml";
+        string xmlPath = Application.dataPath + "/Data/" + fileName + ".xml";
 
         XmlDocument xmlDoc = new XmlDocument();
 
@@ -62,34 +62,10 @@ public class MapManager : MonoBehaviour {
         xmlDoc.Save(xmlPath);
     }
 
-    public void ReadMap()
-    {
-        Init("Border");
-        Init("Board");
-        Init("Cell");
-
-        GameObject[] gameObjectItems = FindObjectsOfType(typeof(GameObject)) as GameObject[];
-        foreach (GameObject gameObjectItem in gameObjectItems)
-        {
-            //储存一个gameobject 
-            if (gameObjectItem.tag != "Board" || gameObjectItem.tag != "Border" || gameObjectItem.tag != "Cell" || gameObjectItem.tag != "BackGround" || gameObjectItem.tag != "MainCamera")
-            {
-                {
-                    gameObjectItem.SetActive(false);
-                }
-            }
-        }
-
-        var gM = Resources.Load("GameManager");
-        GameObject gameManager = Instantiate(gM) as GameObject;
-        gameManager.name = "GameManager";
-        ReadXML();
-    }
-
-    private void ReadXML()
+    public void ReadXML(string fileName)
     {
 
-        string xmlPath = Application.dataPath + "/Data/" + "MapManager.xml";
+        string xmlPath = Application.dataPath + "/Data/" +fileName + ".xml";
         if (File.Exists(xmlPath))
         {
             XmlDocument xmlName = new XmlDocument();
@@ -116,12 +92,14 @@ public class MapManager : MonoBehaviour {
     }
 
     //初始化三个空物体
-    private void Init(string type)
+    public void Init(string type)
     {
-        GameObject s = new GameObject(type + "s")
+        GameObject s = GameObject.Find(type + "s");
+        for(int i = 0; i < s.transform.childCount; i++)
         {
-            tag = type
-        };
+            Destroy(s.transform.GetChild(i));
+
+        }
         s.transform.position = new Vector3(0, 0, 0);
     }
 
@@ -181,23 +159,39 @@ public class MapManager : MonoBehaviour {
     }
 
     //将RenderTexture保存成一张png图片  
-    public bool SavePNG(string pngName)
+    public void SavePNG(string fileName)
     {
         RenderTexture rt = new RenderTexture(Camera.main.pixelWidth,Camera.main.pixelHeight,0);
-        Camera.main.targetTexture = rt;
-        Camera.main.Render();
+        shotCamera.targetTexture = rt;
+        shotCamera.Render();
         RenderTexture prev = RenderTexture.active;
         RenderTexture.active = rt;
+
         Texture2D png = new Texture2D(rt.width, rt.height, TextureFormat.ARGB32, false);
         png.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
         byte[] bytes = png.EncodeToPNG();
-        FileStream file = File.Open(Application.dataPath + "/Data/" + pngName + ".png", FileMode.Create);
+        FileStream file = File.Open(Application.dataPath + "/Data/" + fileName + ".png", FileMode.Create);
         BinaryWriter writer = new BinaryWriter(file);
         writer.Write(bytes);
         file.Close();
         DestroyImmediate(png);
         png = null;
         RenderTexture.active = prev;
-        return true;
+    }
+
+    public Sprite ReadPNG(string fileName)
+    {
+        FileStream file = new FileStream(Application.dataPath + "/Data/" + fileName + ".png", FileMode.Open, FileAccess.Read);
+        file.Seek(0, SeekOrigin.Begin);
+        byte[] bytes = new byte[file.Length];
+        file.Read(bytes, 0, (int)file.Length);
+        file.Close();
+        file.Dispose();
+        file = null;
+
+        Texture2D texture = new Texture2D(Camera.main.pixelWidth, Camera.main.pixelHeight);
+        texture.LoadImage(bytes);
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        return sprite;
     }
 }

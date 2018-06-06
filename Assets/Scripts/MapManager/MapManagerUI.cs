@@ -1,6 +1,7 @@
 ﻿using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class MapManagerUI : MonoBehaviour {
     [SerializeField]
@@ -24,6 +25,9 @@ public class MapManagerUI : MonoBehaviour {
     [SerializeField]
     [Header("【主界面的UI】")]
     private GameObject MainCanvas;
+    [SerializeField]
+    [Header("【试玩界面的UI】")]
+    private GameObject PlayCanvas;
 
     //当前的场景
     GameObject currentCanvas;
@@ -47,7 +51,9 @@ public class MapManagerUI : MonoBehaviour {
     {
         BackGroundCanvas.SetActive(false);
         GameObject background = GameObject.Find("BackGround");
+        GameObject shotBackground = GameObject.Find("BackGroundShot");
         background.GetComponent<Image>().sprite = Resources.Load<Sprite>("MapManager/Background/" + backgroundType);
+        shotBackground.GetComponent<Image>().sprite = Resources.Load<Sprite>("MapManager/Background/" + backgroundType);
         ChoseTypeCanvas.SetActive(true);
     }
 
@@ -62,18 +68,26 @@ public class MapManagerUI : MonoBehaviour {
     //TODO后台添加
     public void OnReturnMain()
     {
+        MapManager.instance.SaveXML(fileName);
+        MapManager.instance.SavePNG(fileName);
         GetCurrentCanvas();
         currentCanvas.SetActive(false);
         var sprite = Resources.Load<Sprite>("MapManager/MapManagerBackground");
         GameObject background = GameObject.Find("BackGround");
+        GameObject shotBackground = GameObject.Find("BackGroundShot");
         background.GetComponent<Image>().sprite = sprite;
-        MainCanvas.SetActive(true);
+        shotBackground.GetComponent<Image>().sprite = sprite;
+        MainCanvas.SetActive(true);       
+        currentButton.GetComponent<Image>().sprite = MapManager.instance.ReadPNG(currentButton.name);
+
     }
 
     //TODO后台添加
     public void OnPlay()
     {
         GetCurrentCanvas();
+        currentCanvas.SetActive(false);
+        PlayCanvas.SetActive(true);
         //获取文件名字
         if(currentCanvas.name == "Main")
         {
@@ -85,22 +99,27 @@ public class MapManagerUI : MonoBehaviour {
     {
         //设置文件名字
         currentButton = EventSystem.current.currentSelectedGameObject;
-        if(currentButton.name == "Edit")
-        {
-            currentButton = currentButton.transform.parent.gameObject;
-        }
-        fileName = currentButton.name;
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             currentButton.transform.GetChild(i).gameObject.SetActive(true);
         }
         currentButton.GetComponent<Button>().enabled = false;
+        fileName = currentButton.name;
         GetCurrentCanvas();
         currentCanvas.SetActive(false);
         BackGroundCanvas.SetActive(true);
     }
 
-    //TODO后台添加
+    //文件读取
+    public void OnContinueEdit()
+    {
+        currentButton = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;
+        fileName = currentButton.name;
+        GetCurrentCanvas();
+        currentCanvas.SetActive(false);
+        ChoseTypeCanvas.SetActive(true);
+    }
+
     public void DelMap()
     {
         currentButton = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;
@@ -111,6 +130,14 @@ public class MapManagerUI : MonoBehaviour {
             currentButton.transform.GetChild(i).gameObject.SetActive(false);
         }
         currentButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("MapManager/AddMap");
+        if(File.Exists(Application.dataPath + "/Data/" + fileName + ".png"))
+        {
+            File.Delete(Application.dataPath + "/Data/" + fileName + ".png");
+        }
+        if(File.Exists(Application.dataPath + "/Data/" + fileName + ".xml"))
+        {
+            File.Delete(Application.dataPath + "/Data/" + fileName + ".xml");
+        }
     }
 
     //获得当前的UI画布

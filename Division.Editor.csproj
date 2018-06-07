@@ -337,7 +337,9 @@
     <Compile Include="Assets\Demigiant\DOTweenPro\Editor\DOTweenAnimationInspector.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Data\1.xml" />
     <None Include="Assets\Data\2.xml" />
+    <None Include="Assets\Data\4.xml" />
     <None Include="Assets\Demigiant\DOTween\DOTween.XML" />
     <None Include="Assets\Demigiant\DOTween\DOTween43.xml" />
     <None Include="Assets\Demigiant\DOTween\DOTween46.xml" />

@@ -1,34 +1,48 @@
 <data>
   <items>
     <item>
-      <name>Board</name>
-      <tag>Board</tag>
-      <positionX>0.866</positionX>
-      <positionY>-0.5</positionY>
+      <name>Coin</name>
+      <tag>Cell</tag>
+      <positionX>0</positionX>
+      <positionY>0</positionY>
     </item>
     <item>
-      <name>Board</name>
-      <tag>Board</tag>
+      <name>Cell</name>
+      <tag>Cell</tag>
       <positionX>-0.866</positionX>
       <positionY>-0.5</positionY>
     </item>
     <item>
-      <name>Board</name>
+      <name>EndBoard</name>
       <tag>Board</tag>
       <positionX>0</positionX>
       <positionY>-1</positionY>
+      <sprite>1.5</sprite>
     </item>
     <item>
       <name>Board</name>
       <tag>Board</tag>
-      <positionX>0</positionX>
-      <positionY>1</positionY>
+      <positionX>0.866</positionX>
+      <positionY>0.5</positionY>
+      <sprite>1.2</sprite>
     </item>
     <item>
       <name>Board</name>
       <tag>Board</tag>
       <positionX>0</positionX>
       <positionY>0</positionY>
+      <sprite>1.1</sprite>
+    </item>
+    <item>
+      <name>Board</name>
+      <tag>Board</tag>
+      <positionX>-0.866</positionX>
+      <positionY>-0.5</positionY>
+      <sprite>1.1</sprite>
+    </item>
+    <item>
+      <name>BackGround</name>
+      <sprite>2</sprite>
     </item>
   </items>
 </data>

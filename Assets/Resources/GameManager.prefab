@@ -52,9 +52,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a4d6860fbb00ae478415936bb30e724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMapManager: 0
   stepList: 
   sceneName: 
+  nextSceneName: 
+  defeat: {fileID: 0}
+  victory: {fileID: 0}
+  victoryOrDefeatMask: {fileID: 0}
 --- !u!114 &114461742883355744
 MonoBehaviour:
   m_ObjectHideFlags: 1

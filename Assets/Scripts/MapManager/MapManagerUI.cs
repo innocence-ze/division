@@ -65,11 +65,30 @@ public class MapManagerUI : MonoBehaviour {
         targetCanvas.SetActive(true);
     }
 
-    //TODO后台添加
     public void OnReturnMain()
     {
-        MapManager.instance.SaveXML(fileName);
-        MapManager.instance.SavePNG(fileName);
+
+        GetCurrentCanvas();
+        if(currentCanvas.name == "Play")
+        {
+            MapManager mm = new MapManager();
+            Destroy(GameObject.Find("GameManager"));
+        }
+        MapManager.instance.gamePrefabs.Clear();
+        if (currentCanvas.name != "Play")
+        {
+            MapManager.instance.SaveXML(fileName);
+            MapManager.instance.SavePNG(fileName);
+        }
+
+        MapManager.instance.Init("Cell");
+        MapManager.instance.Init("Board");
+        MapManager.instance.Init("Border");
+        foreach(MapManagerBackGround mmbg in MapManagerBackGround.mapManagerBackGrounds)
+        {
+            mmbg.haveBoard = false;
+            mmbg.haveCell = false;
+        }
         GetCurrentCanvas();
         currentCanvas.SetActive(false);
         var sprite = Resources.Load<Sprite>("MapManager/MapManagerBackground");
@@ -87,11 +106,26 @@ public class MapManagerUI : MonoBehaviour {
     {
         GetCurrentCanvas();
         currentCanvas.SetActive(false);
-        PlayCanvas.SetActive(true);
         //获取文件名字
         if(currentCanvas.name == "Main")
         {
             fileName = EventSystem.current.currentSelectedGameObject.transform.parent.name;
+        }
+        if(currentCanvas.name != "Main")
+        {
+            MapManager.instance.SaveXML(fileName);
+            MapManager.instance.SavePNG(fileName);
+        }
+
+        MapManager.instance.LoadXML(fileName);
+        if(MapManager.instance.IsRightMap())
+        {
+            PlayCanvas.SetActive(true);
+            MapManager.instance.PlaySet();
+        }
+        else
+        {
+            ChoseTypeCanvas.SetActive(true);
         }
     }
 
@@ -110,7 +144,6 @@ public class MapManagerUI : MonoBehaviour {
         BackGroundCanvas.SetActive(true);
     }
 
-    //文件读取
     public void OnContinueEdit()
     {
         currentButton = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;
@@ -118,6 +151,7 @@ public class MapManagerUI : MonoBehaviour {
         GetCurrentCanvas();
         currentCanvas.SetActive(false);
         ChoseTypeCanvas.SetActive(true);
+        MapManager.instance.ReadXML(fileName);
     }
 
     public void DelMap()
@@ -130,13 +164,22 @@ public class MapManagerUI : MonoBehaviour {
             currentButton.transform.GetChild(i).gameObject.SetActive(false);
         }
         currentButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("MapManager/AddMap");
+
         if(File.Exists(Application.dataPath + "/Data/" + fileName + ".png"))
         {
             File.Delete(Application.dataPath + "/Data/" + fileName + ".png");
         }
-        if(File.Exists(Application.dataPath + "/Data/" + fileName + ".xml"))
+        if (File.Exists(Application.dataPath + "/Data/" + fileName + ".png.meta"))
+        {
+            File.Delete(Application.dataPath + "/Data/" + fileName + ".png.meta");
+        }
+        if (File.Exists(Application.dataPath + "/Data/" + fileName + ".xml"))
         {
             File.Delete(Application.dataPath + "/Data/" + fileName + ".xml");
+        }
+        if (File.Exists(Application.dataPath + "/Data/" + fileName + ".xml.meta"))
+        {
+            File.Delete(Application.dataPath + "/Data/" + fileName + ".xml.meta");
         }
     }
 

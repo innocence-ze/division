@@ -11,19 +11,20 @@ public class MapManager : MonoBehaviour {
 
     [HideInInspector]public List<GameObject> gamePrefabs = new List<GameObject>();
 
-    public MapManager()
-    {
-        instance = this;
-    }
+    [SerializeField]
+    [Header("截屏用的相机")]
+    private Camera shotCamera;
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
+        shotCamera = GameObject.Find("ShotCamera").GetComponent<Camera>();
         //创建后台文件夹
         DirectoryInfo xmlFolder = new DirectoryInfo(Application.dataPath + "/Data/");
         xmlFolder.Create();
     }
 
+    //存储地图信息
     public void SaveXML(string fileName)
     {
         //判断文件及文件夹是否存在，并创建文件
@@ -87,6 +88,7 @@ public class MapManager : MonoBehaviour {
         xmlDoc.Save(xmlPath);
     }
 
+    //读取本地xml文件(非试玩用)
     public void ReadXML(string fileName)
     {
 
@@ -135,6 +137,15 @@ public class MapManager : MonoBehaviour {
         }
     }
 
+    //读取本地xml文件(试玩用)
+    public void LoadXML(string fileName)
+    {
+        Init("Cell");
+        Init("Board");
+        Init("Border");
+        ReadXML(fileName);
+    }
+
     //初始化三个空物体
     public void Init(string type)
     {
@@ -150,26 +161,8 @@ public class MapManager : MonoBehaviour {
         s.transform.position = new Vector3(0, 0, 0);
     }
 
-    [SerializeField]
-    [Header("截屏用的相机")]
-    private Camera shotCamera;
-    public void LoadXML(string fileName)
-    {
-        Init("Cell");
-        Init("Board");
-        Init("Border");
-        ReadXML(fileName);      
-    }
-
-    public void PlaySet()
-    {
-        instance = null;
-        GameObject gameManager = Resources.Load<GameObject>("GameManager");
-        GameObject g = Instantiate(gameManager, new Vector3(0, 0, 0), new Quaternion());
-        g.name = "GameManager";
-    }
-
-    public void ReadMap(GameObject prefab)
+    //读取本地文件后，设置锚点信息
+    private void ReadMap(GameObject prefab)
     {
         Vector3 prefabPosition = prefab.transform.position;
         foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
@@ -213,6 +206,8 @@ public class MapManager : MonoBehaviour {
         }
     }
 
+    //判断地图摆放是否正确
+    //只判断是否能玩
     public bool IsRightMap()
     {
         bool isRightMap = false;
@@ -226,7 +221,7 @@ public class MapManager : MonoBehaviour {
                 isRightMap = true;
                 return (isRightMap);
             }
-            if(!haveCell && gamePrefab.name == "Cell")
+            if(!haveCell && (gamePrefab.name == "Cell1" || gamePrefab.name == "Cell2"))
             {
                 haveCell = true;
                 continue;
@@ -266,6 +261,7 @@ public class MapManager : MonoBehaviour {
         RenderTexture.active = prev;
     }
 
+    //读取本地PNG图片
     public Sprite ReadPNG(string fileName)
     {
         FileStream file = new FileStream(Application.dataPath + "/Data/" + fileName + ".png", FileMode.Open, FileAccess.Read);

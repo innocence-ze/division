@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour {
 
     private void Update()
     {
-        print(Board.boards.Count());
+
     }
 
     public void Victory()

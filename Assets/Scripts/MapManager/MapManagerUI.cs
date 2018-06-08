@@ -29,6 +29,25 @@ public class MapManagerUI : MonoBehaviour {
     [Header("【试玩界面的UI】")]
     private GameObject PlayCanvas;
 
+    private void Start()
+    {
+        for (int i = 1; i <= 6; i++)
+        {
+            string xmlPath = Application.dataPath + "/Data/" + i.ToString() + ".png";
+            if (File.Exists(xmlPath))
+            {
+                Sprite s = MapManager.instance.ReadPNG(i.ToString());
+                Transform t = MainCanvas.transform.GetChild(i);
+                t.GetComponent<Image>().sprite = s;
+                t.GetComponent<Button>().enabled = false;
+                for(int j = 0; j < t.childCount; j++)
+                {
+                    t.GetChild(j).gameObject.SetActive(true);
+                }
+            }
+        }
+    }
+
     //当前的场景
     GameObject currentCanvas;
     GameObject currentButton;
@@ -71,7 +90,9 @@ public class MapManagerUI : MonoBehaviour {
         GetCurrentCanvas();
         if(currentCanvas.name == "Play")
         {
-            MapManager mm = new MapManager();
+            GameObject mm = GameObject.Find("MapManager");
+            mm.AddComponent<MapManager>();
+            mm.AddComponent<MapManagerPrefab>();
             Destroy(GameObject.Find("GameManager"));
         }
         MapManager.instance.gamePrefabs.Clear();
@@ -91,17 +112,18 @@ public class MapManagerUI : MonoBehaviour {
         }
         GetCurrentCanvas();
         currentCanvas.SetActive(false);
+
         var sprite = Resources.Load<Sprite>("MapManager/MapManagerBackground");
         GameObject background = GameObject.Find("BackGround");
         GameObject shotBackground = GameObject.Find("BackGroundShot");
         background.GetComponent<Image>().sprite = sprite;
         shotBackground.GetComponent<Image>().sprite = sprite;
+
         MainCanvas.SetActive(true);       
         currentButton.GetComponent<Image>().sprite = MapManager.instance.ReadPNG(currentButton.name);
 
     }
 
-    //TODO后台添加
     public void OnPlay()
     {
         GetCurrentCanvas();
@@ -121,7 +143,12 @@ public class MapManagerUI : MonoBehaviour {
         if(MapManager.instance.IsRightMap())
         {
             PlayCanvas.SetActive(true);
-            MapManager.instance.PlaySet();
+            GameObject gameManager = Resources.Load<GameObject>("GameManager");
+            GameObject g = Instantiate(gameManager, new Vector3(0, 0, 0), new Quaternion());
+            g.name = "GameManager";
+            GameObject mm = GameObject.Find("MapManager");
+            Destroy(mm.GetComponent<MapManager>());
+            Destroy(mm.GetComponent<MapManagerPrefab>());
         }
         else
         {

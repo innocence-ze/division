@@ -15,11 +15,13 @@ public class Cell : MapManagerPrefab ,ICells,IPrefab
 	{
         if (cellPrefab == null)
         {
-            cellPrefab = Resources.Load<GameObject>("Cells/Cell");
+            cellPrefab = Resources.Load<GameObject>("Cells/Cell2");
         }
-        Instantiate(cellPrefab, pos, new Quaternion(0, 0, 0, 0)).transform.SetParent(GameObject.Find("Cells").transform);
-        
-	}
+        GameObject g = Instantiate(cellPrefab, pos, new Quaternion(0, 0, 0, 0));
+        g.transform.SetParent(GameObject.Find("Cells").transform);
+        g.name = "Cell2";
+
+    }
 
     private int health;
 	//[SerializeField]private Text text;
@@ -53,9 +55,16 @@ public class Cell : MapManagerPrefab ,ICells,IPrefab
 
     public void Init()
     {
-        Sprite cell2 = Resources.Load<Sprite>("Material/Cell2");
-        Health = MaxHealth;
-        GetComponent<SpriteRenderer>().sprite = cell2;
+        //Sprite cell2 = Resources.Load<Sprite>("Material/Cell2");
+        if(gameObject.name == "Cell2")
+        {
+            Health = MaxHealth;
+        }
+        if(gameObject.name == "Cell1")
+        {
+            Health = 1;
+        }
+        //GetComponent<SpriteRenderer>().sprite = cell2;
         cells.Add(this);
         SetBoard();
     }

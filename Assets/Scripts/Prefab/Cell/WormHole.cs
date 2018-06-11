@@ -42,14 +42,26 @@ public class WormHole : MapManagerPrefab ,ICells ,IPrefab {
                 }
             }
 
-            if (Vector3.Distance(Coin.coin.transform.position, this.transform.position) < 0.1f)
+            if (Vector3.Distance(Coin.coin.transform.position, transform.position) < 0.1f)
             {
                 Coin.coin.transform.position = partnerWormHole.transform.position;
                 isUsed = true;
                 partnerWormHole.isUsed = true;
-                this.landedBoard.cellType = CellType.nothing;
-                this.partnerWormHole.landedBoard.cellType = CellType.coin;
+                landedBoard.cellType = CellType.nothing;
+                partnerWormHole.landedBoard.cellType = CellType.coin;
             }
+
+            if (Germ.germ != null)
+            {
+                if (Vector3.Distance(Germ.germ.transform.position, transform.position) < 0.1f)
+                {
+                    Germ.germ.transform.position = partnerWormHole.transform.position;
+                    isUsed = true;
+                    partnerWormHole.isUsed = true;
+                    landedBoard.cellType = CellType.nothing;
+                    partnerWormHole.landedBoard.cellType = CellType.germ;
+                }
+            }    
         }
     }
 

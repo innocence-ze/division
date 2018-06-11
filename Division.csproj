@@ -342,6 +342,7 @@
     <Compile Include="Assets\Scripts\Prefab\Cell\BlackHole.cs" />
     <Compile Include="Assets\Scripts\Prefab\Cell\Cell.cs" />
     <Compile Include="Assets\Scripts\Prefab\Cell\Coin.cs" />
+    <Compile Include="Assets\Scripts\Prefab\Cell\Germ.cs" />
     <Compile Include="Assets\Scripts\Prefab\Cell\ICells.cs" />
     <Compile Include="Assets\Scripts\Prefab\Cell\WormHole.cs" />
     <Compile Include="Assets\Scripts\Prefab\Iprefab.cs" />

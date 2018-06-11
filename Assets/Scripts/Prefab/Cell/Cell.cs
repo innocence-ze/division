@@ -110,16 +110,19 @@ public class Cell : MapManagerPrefab ,ICells,IPrefab
             }
            
             //判断细胞的目的地是否为硬币
-            else if (cell.landedBoard.nearBoards[(int)dir].isUsed && cell.landedBoard.nearBoards[(int)dir].cellType == CellType.coin)
+            else if (cell.landedBoard.nearBoards[(int)dir].isUsed && (cell.landedBoard.nearBoards[(int)dir].cellType == CellType.coin || cell.landedBoard.nearBoards[(int)dir].cellType == CellType.germ))
             {
                 //判断硬币被推到的地方是否为null或者已被占用
-                if (cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir] == null || (cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir].isUsed && cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir].cellType == CellType.cell))
+                if (cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir] == null || (cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir].isUsed && (cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir].cellType == CellType.cell || cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir].cellType == CellType.coin || cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir].cellType == CellType.germ)))
                 {
                     cell.canMove = false;
                 }
                 else
                 {
-                    Coin.coin.MoveTo(dir);
+                    if(cell.landedBoard.nearBoards[(int)dir].cellType == CellType.coin)
+                        Coin.coin.MoveTo(dir);
+                    if(cell.landedBoard.nearBoards[(int)dir].cellType == CellType.germ)
+                        Germ.germ.MoveTo(dir);
                     cell.canMove = true;
                 }
 

@@ -42,17 +42,25 @@ public class BlackHole : MapManagerPrefab,ICells ,IPrefab{
     {
         foreach (Cell c in Cell.cells)
         {
-            if (Vector3.Distance(c.transform.position, this.transform.position) < 0.1f)
+            if (Vector3.Distance(c.transform.position, transform.position) < 0.1f)
             {
                 c.Health = 0;
                 break;
             }
         }
 
-        if (Vector3.Distance(Coin.coin.transform.position, this.transform.position) < 0.1f)
+        if (Vector3.Distance(Coin.coin.transform.position, transform.position) < 0.1f)
         {
             Destroy(Coin.coin.gameObject);
         }
+
+        if (Germ.germ != null)
+        {
+            if (Vector3.Distance(Germ.germ.transform.position, transform.position) < 0.1f)
+            {
+                Destroy(Germ.germ.gameObject);
+            }
+        }      
     }
 
     // Update is called once per frame

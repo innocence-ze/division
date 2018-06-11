@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Coin : MapManagerPrefab,ICells , IPrefab
 {
@@ -8,7 +6,7 @@ public class Coin : MapManagerPrefab,ICells , IPrefab
     public static Coin coin;
 
 	// Use this for initialization
-	void Start ()
+	protected void Start ()
     {
         if (MapManager.instance == null)
         {
@@ -44,7 +42,7 @@ public class Coin : MapManagerPrefab,ICells , IPrefab
 
     public void MoveTo(Direction dir)
     {
-        if (coin.landedBoard.nearBoards[(int)dir] != null && coin.landedBoard.nearBoards[(int)dir].cellType != CellType.cell)
+        if (coin.landedBoard.nearBoards[(int)dir] != null && coin.landedBoard.nearBoards[(int)dir].cellType != CellType.cell && coin.landedBoard.nearBoards[(int)dir].cellType != CellType.germ)
         {
             coin.landedBoard.isUsed = false;
             coin.landedBoard.cellType = CellType.nothing;
@@ -61,7 +59,7 @@ public class Coin : MapManagerPrefab,ICells , IPrefab
 
     // Update is called once per frame
     int fre = 0;
-    void Update ()
+    protected void Update ()
     {
         if (MapManager.instance == null)
         {

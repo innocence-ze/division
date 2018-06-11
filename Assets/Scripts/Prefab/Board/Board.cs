@@ -9,6 +9,7 @@ public enum CellType
     coin,
     blackHole,
     wormHole,
+    germ,
 }
 
 

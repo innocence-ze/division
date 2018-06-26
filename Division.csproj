@@ -331,6 +331,7 @@
     <Compile Include="Assets\Demigiant\DOTweenPro\DOTweenAnimation.cs" />
     <Compile Include="Assets\Scripts\Gamemanager\GameManager.cs" />
     <Compile Include="Assets\Scripts\Gamemanager\InputHandle.cs" />
+    <Compile Include="Assets\Scripts\MainUI.cs" />
     <Compile Include="Assets\Scripts\MapManager\DragItems.cs" />
     <Compile Include="Assets\Scripts\MapManager\MapManager.cs" />
     <Compile Include="Assets\Scripts\MapManager\MapManagerBackGround.cs" />
@@ -349,7 +350,6 @@
     <Compile Include="Assets\Test.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Data\2.xml" />
     <None Include="Assets\Demigiant\DOTween\DOTween.XML" />
     <None Include="Assets\Demigiant\DOTween\DOTween43.xml" />
     <None Include="Assets\Demigiant\DOTween\DOTween46.xml" />

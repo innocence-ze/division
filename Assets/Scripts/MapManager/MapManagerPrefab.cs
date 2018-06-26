@@ -35,12 +35,25 @@ public class MapManagerPrefab : MonoBehaviour
                     {
                         if(mb.haveCell)
                         {
+                            if (mb.cellPrefab.name == "Coin" && MapManager.instance.HaveCoin)
+                            {
+                                MapManager.instance.HaveCoin = false;
+                            }
+                            if (mb.cellPrefab.name == "Cell")
+                            {
+                                MapManager.instance.CellCount -= 1;
+                            }
                             Destroy(mb.cellPrefab);
                             mb.haveCell = false;
                             break;
                         }
                         else
                         {
+                            
+                            if (mb.boardPrefab.name == "EndBoard" && MapManager.instance.HaveEndboard)
+                            {
+                                MapManager.instance.HaveEndboard = false;
+                            }
                             Board.boards.Remove(mb.boardPrefab.GetComponent<Board>());
                             Destroy(mb.boardPrefab);
                             mb.haveBoard = false;

@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -121,8 +120,16 @@ public class Cell : MapManagerPrefab ,ICells,IPrefab
                 {
                     if(cell.landedBoard.nearBoards[(int)dir].cellType == CellType.coin)
                         Coin.coin.MoveTo(dir);
-                    if(cell.landedBoard.nearBoards[(int)dir].cellType == CellType.germ)
-                        Germ.germ.MoveTo(dir);
+                    if (cell.landedBoard.nearBoards[(int)dir].cellType == CellType.germ)
+                    {
+                        foreach(Germ germ in Germ.germs)
+                        {
+                            if(Vector3.Distance(germ.transform.position, cell.landedBoard.nearBoards[(int)dir].transform.position) < 0.3f)
+                            {
+                                germ.MoveTo(dir);
+                            }
+                        }
+                    }
                     cell.canMove = true;
                 }
 

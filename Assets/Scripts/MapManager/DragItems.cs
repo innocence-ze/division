@@ -16,6 +16,10 @@ public class DragItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public void OnBeginDrag(PointerEventData eventData)
     {
         Image image = GetComponent<Image>();
+        if( (gameObject.name == "Coin" && MapManager.instance.HaveCoin) || (gameObject.name == "EndBoard" && MapManager.instance.HaveEndboard) )
+        {
+            return;
+        }
         if(Input.GetMouseButton(0))
         {
             //加载图片
@@ -62,7 +66,7 @@ public class DragItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if(Input.GetMouseButtonUp(0))
+        if(Input.GetMouseButtonUp(0) && draggingPrefabs[eventData.pointerId] != null)
         {
             bool isOnBG = false;
             foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
@@ -74,8 +78,20 @@ public class DragItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                     {
                         if(itemType == "Boards")
                         {
-                            Board.boards.Add(draggingPrefabs[eventData.pointerId].GetComponent<Board>());
+                            Board.boards.Add(draggingPrefabs[eventData.pointerId].GetComponent<Board>());                           
                         }
+                        if (gameObject.name == "EndBoard")
+                        {
+                            MapManager.instance.HaveEndboard = true;
+                        }
+                        else if (gameObject.name == "Coin")
+                        {
+                            MapManager.instance.HaveCoin = true;
+                        }
+                        else if (gameObject.name == "Cell")
+                        {
+                            MapManager.instance.CellCount += 1;
+                        }                       
                         break;
                     }
                 }

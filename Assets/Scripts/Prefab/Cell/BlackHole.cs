@@ -53,13 +53,16 @@ public class BlackHole : MapManagerPrefab,ICells ,IPrefab{
         {
             Destroy(Coin.coin.gameObject);
         }
-
-        if (Germ.germ != null)
+        
+        if (Germ.germs != null)
         {
-            if (Vector3.Distance(Germ.germ.transform.position, transform.position) < 0.1f)
+            foreach(Germ germ in Germ.germs)
             {
-                Destroy(Germ.germ.gameObject);
-            }
+                if (Vector3.Distance(germ.transform.position, transform.position) < 0.1f)
+                {
+                    Destroy(germ.gameObject);
+                }
+            }           
         }      
     }
 

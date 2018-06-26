@@ -206,14 +206,69 @@ public class MapManager : MonoBehaviour {
         }
     }
 
+    private bool haveCell = false;
+    private bool haveCoin = false;
+    private bool haveEndboard = false;
+    private int cellCount = 0;
+
+    public int CellCount
+    {
+        get
+        {
+            return cellCount;
+        }
+        set
+        {
+            cellCount = value;
+            if (CellCount > 0)
+            {
+                HaveCell = true;
+            }
+            else
+            {
+                HaveCell = false;
+            }
+        }
+    }
+    public bool HaveCell
+    {
+        get
+        {
+            return haveCell;
+        }
+        set
+        {
+            haveCell = value;
+        }
+    }
+    public bool HaveCoin
+    {
+        get
+        {
+            return haveCoin;
+        }
+        set
+        {
+            haveCoin = value;
+        }
+    }
+    public bool HaveEndboard
+    {
+        get
+        {
+            return haveEndboard;
+        }
+        set
+        {
+            haveEndboard = value;
+        }
+    }
+
     //判断地图摆放是否正确
     //只判断是否能玩
     public bool IsRightMap()
     {
-        bool isRightMap = false;
-        bool haveCell = false;
-        bool haveCoin = false;
-        bool haveEndboard = false;
+        bool isRightMap = false;       
         foreach(GameObject gamePrefab in gamePrefabs)
         {
             if(haveEndboard && haveCoin && haveCell)

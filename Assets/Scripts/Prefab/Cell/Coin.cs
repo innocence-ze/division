@@ -42,17 +42,17 @@ public class Coin : MapManagerPrefab,ICells , IPrefab
 
     public void MoveTo(Direction dir)
     {
-        if (coin.landedBoard.nearBoards[(int)dir] != null && coin.landedBoard.nearBoards[(int)dir].cellType != CellType.cell && coin.landedBoard.nearBoards[(int)dir].cellType != CellType.germ)
+        if (landedBoard.nearBoards[(int)dir] != null && landedBoard.nearBoards[(int)dir].cellType != CellType.cell && landedBoard.nearBoards[(int)dir].cellType != CellType.germ)
         {
-            coin.landedBoard.isUsed = false;
-            coin.landedBoard.cellType = CellType.nothing;
-            Vector3 position = coin.landedBoard.nearBoards[(int)dir].transform.position;
-            coin.transform.position = position;
-            coin.landedBoard = coin.landedBoard.nearBoards[(int)dir];
-            coin.landedBoard.isUsed = true;
-            if(coin.landedBoard.cellType == CellType.nothing)
+            landedBoard.isUsed = false;
+            landedBoard.cellType = CellType.nothing;
+            Vector3 position = landedBoard.nearBoards[(int)dir].transform.position;
+            transform.position = position;
+            landedBoard = landedBoard.nearBoards[(int)dir];
+            landedBoard.isUsed = true;
+            if(landedBoard.cellType == CellType.nothing)
             {
-                coin.landedBoard.cellType = CellType.coin;
+                landedBoard.cellType = CellType.coin;
             }
         }
     }

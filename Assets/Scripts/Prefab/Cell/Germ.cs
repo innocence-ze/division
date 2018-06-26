@@ -1,10 +1,9 @@
-﻿using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Germ : MapManagerPrefab, ICells, IPrefab
 {
-    public static Germ germ;
+    public static List<Germ> germs = new List<Germ>();
     [SerializeField] private Board landedBoard;
 
     private void Start()
@@ -18,24 +17,24 @@ public class Germ : MapManagerPrefab, ICells, IPrefab
 
     public void Init()
     {
-        germ = this;
+        germs.Add(this);
         SetBoard();
         landedBoard.cellType = CellType.germ;
     }
 
     public void MoveTo(Direction dir)
     {
-        if (germ.landedBoard.nearBoards[(int)dir] != null && germ.landedBoard.nearBoards[(int)dir].cellType != CellType.cell && germ.landedBoard.nearBoards[(int)dir].cellType != CellType.germ)
+        if (landedBoard.nearBoards[(int)dir] != null && landedBoard.nearBoards[(int)dir].cellType != CellType.cell && landedBoard.nearBoards[(int)dir].cellType != CellType.germ)
         {
-            germ.landedBoard.isUsed = false;
-            germ.landedBoard.cellType = CellType.nothing;
-            Vector3 position = germ.landedBoard.nearBoards[(int)dir].transform.position;
-            germ.transform.position = position;
-            germ.landedBoard = germ.landedBoard.nearBoards[(int)dir];
-            germ.landedBoard.isUsed = true;
-            if (germ.landedBoard.cellType == CellType.nothing)
+            landedBoard.isUsed = false;
+            landedBoard.cellType = CellType.nothing;
+            Vector3 position = landedBoard.nearBoards[(int)dir].transform.position;
+            transform.position = position;
+            landedBoard = landedBoard.nearBoards[(int)dir];
+            landedBoard.isUsed = true;
+            if (landedBoard.cellType == CellType.nothing)
             {
-                germ.landedBoard.cellType = CellType.germ;
+                landedBoard.cellType = CellType.germ;
             }
         }
     }
@@ -79,5 +78,12 @@ public class Germ : MapManagerPrefab, ICells, IPrefab
         {
             fre = 0;
         }
+    }
+
+    void OnDestroy()
+    {
+        landedBoard.isUsed = false;
+        landedBoard.cellType = CellType.nothing;
+        germs.Remove(this);
     }
 }

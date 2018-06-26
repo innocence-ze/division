@@ -36,8 +36,8 @@ public class WormHole : MapManagerPrefab ,ICells ,IPrefab {
                     c.transform.position = partnerWormHole.transform.position;
                     isUsed = true;
                     partnerWormHole.isUsed = true;
-                    this.landedBoard.cellType = CellType.nothing;
-                    this.partnerWormHole.landedBoard.cellType = CellType.cell;
+                    landedBoard.cellType = CellType.nothing;
+                    partnerWormHole.landedBoard.cellType = CellType.cell;
                     break;
                 }
             }
@@ -51,17 +51,20 @@ public class WormHole : MapManagerPrefab ,ICells ,IPrefab {
                 partnerWormHole.landedBoard.cellType = CellType.coin;
             }
 
-            if (Germ.germ != null)
+            foreach (Germ germ in Germ.germs)
             {
-                if (Vector3.Distance(Germ.germ.transform.position, transform.position) < 0.1f)
+                if (germ != null)
                 {
-                    Germ.germ.transform.position = partnerWormHole.transform.position;
-                    isUsed = true;
-                    partnerWormHole.isUsed = true;
-                    landedBoard.cellType = CellType.nothing;
-                    partnerWormHole.landedBoard.cellType = CellType.germ;
+                    if (Vector3.Distance(germ.transform.position, transform.position) < 0.1f)
+                    {
+                        germ.transform.position = partnerWormHole.transform.position;
+                        isUsed = true;
+                        partnerWormHole.isUsed = true;
+                        landedBoard.cellType = CellType.nothing;
+                        partnerWormHole.landedBoard.cellType = CellType.germ;
+                    }
                 }
-            }    
+            }                 
         }
     }
 

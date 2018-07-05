@@ -47,15 +47,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Board
+  - name: Boards
     uniqueID: 1050638589
     locked: 0
-  - name: Border
+  - name: Borders
     uniqueID: 1241659765
     locked: 0
-  - name: Cell
+  - name: Cells
     uniqueID: 1558444357
-    locked: 0
-  - name: Hole
-    uniqueID: 2956872183
     locked: 0

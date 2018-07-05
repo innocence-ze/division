@@ -169,24 +169,24 @@ public class MapManager : MonoBehaviour {
         {
             if (Vector3.Distance(prefabPosition, mb.transform.position) <= 0.6f)
             {
-                if (Vector3.Distance(prefabPosition, mb.transform.position) >= 0.4f && prefabPosition.y > transform.position.y && prefab.tag == "Border")
-                {
-                    if (prefabPosition.x - transform.position.x < -0.5f && mb.border1 == null)
-                    {
-                        mb.border1 = prefab;
-                        continue;
-                    }
-                    else if (prefabPosition.x - transform.position.x > -0.5f && prefabPosition.x - transform.position.x < 0.5f && mb.border2 == null)
-                    {
-                        mb.border2 = prefab;
-                        continue;
-                    }
-                    else if (prefabPosition.x - transform.position.x > 0.5f && mb.border3 == null)
-                    {
-                        mb.border3 = prefab;
-                        continue;
-                    }
-                }
+                //if (Vector3.Distance(prefabPosition, mb.transform.position) >= 0.4f && prefabPosition.y > transform.position.y && prefab.tag == "Border")
+                //{
+                //    if (prefabPosition.x - transform.position.x < -0.5f && mb.border1 == null)
+                //    {
+                //        mb.border1 = prefab;
+                //        continue;
+                //    }
+                //    else if (prefabPosition.x - transform.position.x > -0.5f && prefabPosition.x - transform.position.x < 0.5f && mb.border2 == null)
+                //    {
+                //        mb.border2 = prefab;
+                //        continue;
+                //    }
+                //    else if (prefabPosition.x - transform.position.x > 0.5f && mb.border3 == null)
+                //    {
+                //        mb.border3 = prefab;
+                //        continue;
+                //    }
+                //}
                 if (Vector3.Distance(prefabPosition, mb.transform.position) <= 0.4f)
                 {
                     if (prefab.tag == "Cell")

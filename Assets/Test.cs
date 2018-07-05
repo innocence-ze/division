@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Test : MonoBehaviour {
 
+    public GameObject a;
 	// Use this for initialization
 	void Start () {
-        print(transform.childCount);
-        print(transform.GetChild(0).gameObject.name);
     }
 	
 	// Update is called once per frame
 	void Update () {
-
+        Debug.Log(a.transform.rotation);
 	}
 }

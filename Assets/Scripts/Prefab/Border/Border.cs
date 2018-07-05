@@ -32,7 +32,7 @@ public class Border : MapManagerPrefab ,IPrefab
         int i = 0;
         foreach(Board b in Board.boards)
         {
-            if (Vector3.Distance(b.transform.position, this.transform.position) <= 0.7f) 
+            if (Vector3.Distance(b.transform.position, transform.position) <= 0.7f) 
             {
                 nearBoards[i] = b;
                 i++;

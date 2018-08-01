@@ -2,8 +2,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class MapManagerUI : MonoBehaviour {
+
+    public static MapManagerUI instance;
+
     [SerializeField]
     [Header("【选择地板的UI】")]
     private GameObject BoardCanvas;
@@ -28,9 +32,13 @@ public class MapManagerUI : MonoBehaviour {
     [SerializeField]
     [Header("【试玩界面的UI】")]
     private GameObject PlayCanvas;
+    [SerializeField]
+    [Header("【胜利失败界面的UI】")]
+    private GameObject End;
 
     private void Start()
     {
+        instance = this;
         for (int i = 1; i <= 6; i++)
         {
             string xmlPath = Application.dataPath + "/Data/" + i.ToString() + ".png";
@@ -52,6 +60,31 @@ public class MapManagerUI : MonoBehaviour {
     GameObject currentCanvas;
     GameObject currentButton;
     string fileName;
+
+    public void Victory()
+    {
+        End.SetActive(true);
+        End.transform.Find("Mask").gameObject.SetActive(true);
+        End.transform.Find("Victory").gameObject.SetActive(true);
+    }
+
+    public void Defeat()
+    {
+        End.SetActive(true);
+        End.transform.Find("Mask").gameObject.SetActive(true);
+        End.transform.Find("Defeat").gameObject.SetActive(true);
+    }
+
+    public void OnReplay()
+    {
+
+    }
+
+    public void OnReturnMenu()
+    {
+        MapManagerBackGround.mapManagerBackGrounds.Clear();
+        SceneManager.LoadScene("Main");
+    }
 
     //选择地板场景完成
     public void OnChangeBoardColor(string boardType)
@@ -88,7 +121,7 @@ public class MapManagerUI : MonoBehaviour {
     {
 
         GetCurrentCanvas();
-        if(currentCanvas.name == "Play")
+        if(currentCanvas.name == "Play" ||currentCanvas.name == "End")
         {
             GameObject mm = GameObject.Find("MapManager");
             mm.AddComponent<MapManager>();
@@ -96,7 +129,7 @@ public class MapManagerUI : MonoBehaviour {
             Destroy(GameObject.Find("GameManager"));
         }
         MapManager.instance.gamePrefabs.Clear();
-        if (currentCanvas.name != "Play")
+        if (currentCanvas.name != "Play" && currentCanvas.name != "End")
         {
             MapManager.instance.SaveXML(fileName);
             MapManager.instance.SavePNG(fileName);
@@ -119,8 +152,9 @@ public class MapManagerUI : MonoBehaviour {
         background.GetComponent<Image>().sprite = sprite;
         shotBackground.GetComponent<Image>().sprite = sprite;
 
-        MainCanvas.SetActive(true);       
-        currentButton.GetComponent<Image>().sprite = MapManager.instance.ReadPNG(currentButton.name);
+        MainCanvas.SetActive(true);
+        if (currentCanvas.name != "Play" && currentCanvas.name != "End")
+            currentButton.GetComponent<Image>().sprite = MapManager.instance.ReadPNG(currentButton.name);
 
     }
 
@@ -128,24 +162,26 @@ public class MapManagerUI : MonoBehaviour {
     {
         GetCurrentCanvas();
         currentCanvas.SetActive(false);
-        //获取文件名字
-        if(currentCanvas.name == "Main")
+        if (currentCanvas.name != "End")
         {
-            fileName = EventSystem.current.currentSelectedGameObject.transform.parent.name;
-        }
-        if(currentCanvas.name != "Main")
-        {
-            MapManager.instance.SaveXML(fileName);
-            MapManager.instance.SavePNG(fileName);
-        }
-
+            //获取文件名字
+            if (currentCanvas.name == "Main")
+            {
+                fileName = EventSystem.current.currentSelectedGameObject.transform.parent.name;
+            }
+            if (currentCanvas.name != "Main")
+            {
+                MapManager.instance.SaveXML(fileName);
+                MapManager.instance.SavePNG(fileName);
+            }
+            GameObject g = Resources.Load<GameObject>("GameManager");
+            g = Instantiate(g);
+            g.name = "GameManager";
+        }       
         MapManager.instance.LoadXML(fileName);
         if(MapManager.instance.IsRightMap())
         {
             PlayCanvas.SetActive(true);
-            GameObject gameManager = Resources.Load<GameObject>("GameManager");
-            GameObject g = Instantiate(gameManager, new Vector3(0, 0, 0), new Quaternion());
-            g.name = "GameManager";
             GameObject mm = GameObject.Find("MapManager");
             Destroy(mm.GetComponent<MapManager>());
             Destroy(mm.GetComponent<MapManagerPrefab>());

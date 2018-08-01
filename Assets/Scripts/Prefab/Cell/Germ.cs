@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class Germ : MapManagerPrefab, ICells, IPrefab
 {
@@ -71,7 +72,12 @@ public class Germ : MapManagerPrefab, ICells, IPrefab
             SetBoard();
             if(landedBoard.GetComponent<EndBoard>() != null)
             {
-                GameManager.instance.Defeat();
+                if (SceneManager.GetActiveScene().name != "MapManager")
+                    GameManager.instance.Defeat();
+                else
+                {
+                    MapManagerUI.instance.Defeat();
+                }
             }
         }
         else

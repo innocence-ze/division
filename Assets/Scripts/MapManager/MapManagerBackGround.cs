@@ -16,7 +16,7 @@ public class MapManagerBackGround : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
+    void OnEnable () {
         mapManagerBackGrounds.Add(this);
 
         borders = new GameObject[6];

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainUI : MonoBehaviour {
@@ -18,28 +19,23 @@ public class MainUI : MonoBehaviour {
     [Header("【退出】")]
     private GameObject quitGame;
 
-    void QuitGame()
+    public void QuitGame()
     {
-
+        Application.Quit();
     }
 
-    void BeginGame()
+    public void BeginGame()
     {
-
+        SceneManager.LoadScene("1");
     }
 
-    void ContinueGame()
+    public void ContinueGame()
     {
-
+        SceneManager.LoadScene("1");
     }
 
-    void Map()
+    public void Map()
     {
-
-    }
-
-    private void Start()
-    {
-        
+        SceneManager.LoadScene("MapManager"); 
     }
 }

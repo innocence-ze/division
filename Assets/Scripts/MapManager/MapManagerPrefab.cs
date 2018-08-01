@@ -80,10 +80,10 @@ public class MapManagerPrefab : MonoBehaviour
     //TODO
     //添加细胞壁
     void MovePrefab()
-    {       
+    {
         //找到要移动的物体
         if (Input.GetMouseButtonDown(0))
-        {           
+        {
             foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
             {
                 if (Vector3.Distance(mousePosition, mb.transform.position) <= 0.6f)

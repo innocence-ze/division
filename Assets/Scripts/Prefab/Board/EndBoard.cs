@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EndBoard : Board {
 
@@ -22,7 +23,14 @@ public class EndBoard : Board {
             Vector3 cPos = Coin.coin.transform.position;
             if (Vector3.Distance(pos, cPos) < 0.5f)
             {
-                GameManager.instance.Victory();
+                if(SceneManager.GetActiveScene().name != "MapManager")
+                {
+                    GameManager.instance.Victory();
+                }
+                else
+                {
+                    MapManagerUI.instance.Victory();
+                }
             }
         }
     }

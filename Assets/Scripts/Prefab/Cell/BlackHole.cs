@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BlackHole : MapManagerPrefab,ICells ,IPrefab{
 
@@ -84,7 +85,12 @@ public class BlackHole : MapManagerPrefab,ICells ,IPrefab{
             }
             else
             {
-                GameManager.instance.Defeat();
+                if(SceneManager.GetActiveScene().name != "MapManager")
+                    GameManager.instance.Defeat();
+                else
+                {
+                    MapManagerUI.instance.Defeat();
+                }
             }
             SetBoard();
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using UnityEngine;
@@ -22,9 +23,22 @@ public class MapManager : MonoBehaviour {
         //创建后台文件夹
         DirectoryInfo xmlFolder = new DirectoryInfo(Application.dataPath + "/Data/");
         xmlFolder.Create();
+        GameObject[] go = GameObject.FindGameObjectsWithTag("BackGround");
+        foreach(var g in go)
+        {
+            g.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width, Screen.height);
+        }
     }
 
-    //存储地图信息
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            print(Board.boards.Count);
+        }
+    }
+
+    // 存储地图信息
     public void SaveXML(string fileName)
     {
         //判断文件及文件夹是否存在，并创建文件
@@ -69,7 +83,16 @@ public class MapManager : MonoBehaviour {
                     XmlElement sprite = xmlDoc.CreateElement("sprite");
                     sprite.InnerText = gameObjectItem.GetComponent<SpriteRenderer>().sprite.name;
                     xmlItem.AppendChild(sprite);
-                }                   
+                }    
+                if(gameObjectItem.tag == "Border")
+                {
+                    XmlElement type = xmlDoc.CreateElement("borderType");
+                    type.InnerText = gameObjectItem.GetComponent<Border>().borderType.ToString();
+                    xmlItem.AppendChild(type);
+                    XmlElement rotationZ = xmlDoc.CreateElement("rotationZ");
+                    rotationZ.InnerText = gameObjectItem.transform.rotation.eulerAngles.z.ToString();
+                    xmlItem.AppendChild(rotationZ);
+                }
             }
             if(gameObjectItem.name == "BackGround")
             {
@@ -89,6 +112,7 @@ public class MapManager : MonoBehaviour {
     }
 
     //读取本地xml文件(非试玩用)
+    //TODOborder的旋转
     public void ReadXML(string fileName)
     {
 
@@ -115,7 +139,6 @@ public class MapManager : MonoBehaviour {
                     string name = itemName.InnerText;
                     GameObject prefab = Resources.Load<GameObject>(tag + "/" + name);
                     readItem = Instantiate(prefab, psition, Quaternion.identity) as GameObject;
-
                     readItem.name = itemName.InnerText;
                     readItem.transform.SetParent(GameObject.Find(tag).transform);
                     gamePrefabs.Add(readItem);
@@ -123,7 +146,29 @@ public class MapManager : MonoBehaviour {
                     {
                         XmlNode itemSprite = item.SelectSingleNode("sprite");
                         readItem.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("MapManager/Board/" + itemSprite.InnerText);
-                        
+                        if (name.Equals("EndBoard"))
+                        {
+                            haveEndboard = true;
+                        }
+                    }
+                    else if(itemTag.InnerText == "Border")
+                    {
+                        XmlNode itemType = item.SelectSingleNode("borderType");
+                        XmlNode itemRotZ = item.SelectSingleNode("rotationZ");
+                        readItem.transform.rotation = Quaternion.Euler(0, 0, float.Parse(itemRotZ.InnerText));
+                        readItem.GetComponent<Border>().borderType = (BorderDirection)Enum.Parse(typeof(BorderDirection), itemType.InnerText);
+                    }
+                    else
+                    {
+                        if(name.Contains("Cell"))
+                        {
+                            haveCell = true;
+                            cellCount++;
+                        }
+                        else if (name.Equals("Coin"))
+                        {
+                            haveCoin = true;
+                        }
                     }
                     ReadMap(readItem);
                 } 
@@ -165,34 +210,17 @@ public class MapManager : MonoBehaviour {
     private void ReadMap(GameObject prefab)
     {
         Vector3 prefabPosition = prefab.transform.position;
-        foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
+        if (prefab.tag != "Border")
         {
-            if (Vector3.Distance(prefabPosition, mb.transform.position) <= 0.6f)
+            foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
             {
-                //if (Vector3.Distance(prefabPosition, mb.transform.position) >= 0.4f && prefabPosition.y > transform.position.y && prefab.tag == "Border")
-                //{
-                //    if (prefabPosition.x - transform.position.x < -0.5f && mb.border1 == null)
-                //    {
-                //        mb.border1 = prefab;
-                //        continue;
-                //    }
-                //    else if (prefabPosition.x - transform.position.x > -0.5f && prefabPosition.x - transform.position.x < 0.5f && mb.border2 == null)
-                //    {
-                //        mb.border2 = prefab;
-                //        continue;
-                //    }
-                //    else if (prefabPosition.x - transform.position.x > 0.5f && mb.border3 == null)
-                //    {
-                //        mb.border3 = prefab;
-                //        continue;
-                //    }
-                //}
                 if (Vector3.Distance(prefabPosition, mb.transform.position) <= 0.4f)
                 {
                     if (prefab.tag == "Cell")
                     {
                         mb.cellPrefab = prefab;
                         mb.haveCell = true;
+                        continue;
                     }
                     else if (prefab.tag == "Board")
                     {
@@ -204,11 +232,26 @@ public class MapManager : MonoBehaviour {
                 }
             }
         }
+        else
+        {
+            foreach(MapManagerBorder mb in MapManagerBorder.mapManagerBorders)
+            {
+                if(Vector3.Distance(prefabPosition, mb.transform.position) <= 0.2f)
+                {
+                    mb.haveBorder = true;
+                    mb.borderPrefab = prefab;
+                }
+            }
+        }
     }
 
+    [SerializeField]
     private bool haveCell = false;
+    [SerializeField]
     private bool haveCoin = false;
+    [SerializeField]
     private bool haveEndboard = false;
+    [SerializeField]
     private int cellCount = 0;
 
     public int CellCount
@@ -263,9 +306,11 @@ public class MapManager : MonoBehaviour {
             haveEndboard = value;
         }
     }
-
-    //判断地图摆放是否正确
-    //只判断是否能玩
+    
+    /// <summary>
+    /// 判断地图摆放是否正确
+    /// </summary>
+    /// <returns>是否能玩</returns>
     public bool IsRightMap()
     {
         bool isRightMap = false;       
@@ -295,7 +340,10 @@ public class MapManager : MonoBehaviour {
         return isRightMap;
     }
 
-    //将RenderTexture保存成一张png图片  
+    /// <summary>
+    /// 将RenderTexture保存成一张png图片  
+    /// </summary>
+    /// <param name="fileName"></param>
     public void SavePNG(string fileName)
     {
         RenderTexture rt = new RenderTexture(Camera.main.pixelWidth,Camera.main.pixelHeight,0);

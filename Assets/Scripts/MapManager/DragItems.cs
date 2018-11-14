@@ -41,25 +41,39 @@ public class DragItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     //拖拽时 物体随鼠标移动
     private void SetDraggingPosition(PointerEventData eventData)
     {
+       
         //鼠标拖动的物体
         var prefabTransform = draggingPrefabs[eventData.pointerId].GetComponent<Transform>();
         prefabTransform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         prefabTransform.position -= new Vector3(0, 0, Camera.main.transform.position.z);
-        foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
+        if(prefabTransform.GetComponent<Border>() == null)
         {
-            if(Vector3.Distance(mb.transform.position,prefabTransform.position) <= 0.5f)
+            foreach (MapManagerBackGround mmb in MapManagerBackGround.mapManagerBackGrounds)
             {
-                mb.FindPrefab(prefabTransform);
-            }
-            else
-            {
-                Destroy(mb.GetComponent<SpriteRenderer>());
-                foreach(GameObject b in mb.borders)
+                if (Vector3.Distance(mmb.transform.position, prefabTransform.position) <= 0.5f)
                 {
-                    Destroy(b.GetComponent<SpriteRenderer>());
+                    mmb.FindPrefab(prefabTransform);
+                }
+                else
+                {
+                    Destroy(mmb.GetComponent<SpriteRenderer>());
                 }
             }
         }
+        else
+        {
+            foreach (MapManagerBorder mmb in MapManagerBorder.mapManagerBorders)
+            {
+                if (Vector3.Distance(mmb.transform.position, prefabTransform.position) <= 0.2f)
+                {
+                    mmb.FindPrefab(prefabTransform);
+                }
+                else
+                {
+                    Destroy(mmb.GetComponent<SpriteRenderer>());
+                }
+            }
+        }      
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -70,50 +84,63 @@ public class DragItems : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         }
     }
 
-    //TODO
     public void OnEndDrag(PointerEventData eventData)
     {
-        if(Input.GetMouseButtonUp(0) && draggingPrefabs[eventData.pointerId] != null)
+        Transform prefab = draggingPrefabs[eventData.pointerId].transform;
+        if (Input.GetMouseButtonUp(0) && prefab != null)
         {
-            draggingPrefabs[eventData.pointerId].GetComponent<SpriteRenderer>().sortingOrder -= 1;
+            prefab.GetComponent<SpriteRenderer>().sortingOrder -= 1;
             bool isOnBG = false;
-            foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
+            if (prefab.GetComponent<Border>() == null)
             {
-                if (Vector3.Distance(draggingPrefabs[eventData.pointerId].transform.position, mb.transform.position) <= 0.5f)
+                foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
                 {
-                    isOnBG = mb.FixedPrefabPosition(draggingPrefabs[eventData.pointerId].transform);
-                    if (isOnBG)
+                    if (Vector3.Distance(prefab.position, mb.transform.position) <= 0.5f)
                     {
-                        if (itemType == "Boards")
+                        isOnBG = mb.FixedPrefabPosition(prefab);
+                        if (isOnBG)
                         {
-                            Board.boards.Add(draggingPrefabs[eventData.pointerId].GetComponent<Board>());
+                            if (itemType == "Boards")
+                            {
+                                Board.boards.Add(prefab.GetComponent<Board>());
+                            }
+                            if (gameObject.name == "EndBoard")
+                            {
+                                MapManager.instance.HaveEndboard = true;
+                            }
+                            else if (gameObject.name == "Coin")
+                            {
+                                MapManager.instance.HaveCoin = true;
+                            }
+                            else if (gameObject.name == "Cell")
+                            {
+                                MapManager.instance.CellCount += 1;
+                            }
+                            break;
                         }
-                        if (gameObject.name == "EndBoard")
-                        {
-                            MapManager.instance.HaveEndboard = true;
-                        }
-                        else if (gameObject.name == "Coin")
-                        {
-                            MapManager.instance.HaveCoin = true;
-                        }
-                        else if (gameObject.name == "Cell")
-                        {
-                            MapManager.instance.CellCount += 1;
-                        }
-                        break;
                     }
-                }            
+                }
+            }
+            else
+            {
+                foreach (MapManagerBorder mb in MapManagerBorder.mapManagerBorders)
+                {
+                    if (Vector3.Distance(prefab.position, mb.transform.position) <= 0.2f)
+                    {
+                        isOnBG = mb.FixedPrefabPosition(prefab);
+                    }
+                }
             }
             //判断是否在锚点上 不在锚点时将物体移除队列
             if (!isOnBG)
             {
-                if (draggingPrefabs[eventData.pointerId].GetComponent<Board>() != null)
+                if (prefab.GetComponent<Board>() != null)
                 {
-                    Board.boards.Remove(draggingPrefabs[eventData.pointerId].GetComponent<Board>());
+                    Board.boards.Remove(prefab.GetComponent<Board>());
                 }
-                if (draggingPrefabs[eventData.pointerId].GetComponent<Cell>() != null)
+                if (prefab.GetComponent<Cell>() != null)
                 {
-                    Cell.cells.Remove(draggingPrefabs[eventData.pointerId].GetComponent<Cell>());
+                    Cell.cells.Remove(prefab.GetComponent<Cell>());
                 }
                 Destroy(draggingPrefabs[eventData.pointerId]);
             }

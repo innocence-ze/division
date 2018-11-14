@@ -107,5 +107,13 @@ public class WormHole : MapManagerPrefab ,ICells ,IPrefab {
         SetBoard();
         landedBoard.isUsed = true;
         landedBoard.cellType = CellType.wormHole;
+        GameObject[] partner = GameObject.FindGameObjectsWithTag("Cell");
+        foreach(var p in partner)
+        {
+            if (p.GetComponent<WormHole>() != null && p.GetComponent<WormHole>() != this)
+            {
+                partnerWormHole = p.GetComponent<WormHole>();
+            }
+        }
     }
 }

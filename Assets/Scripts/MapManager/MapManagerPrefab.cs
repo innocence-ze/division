@@ -6,99 +6,76 @@ public class MapManagerPrefab : MonoBehaviour
     private Vector3 mousePosition;
 
     //TODO
-    void DeletePrefab()
+    private void DeletePrefab()
     {
         if(Input.GetMouseButtonUp(1))
         {           
             foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
             {
-                if(Vector3.Distance(mousePosition,mb.transform.position) <= 0.6f)
+                if (mb.haveBoard && Vector3.Distance(mousePosition, mb.transform.position) <= 0.3f)
                 {
-                    //删除细胞壁
-                    if (Vector3.Distance(mousePosition, mb.transform.position) >= 0.4f && mousePosition.y > transform.position.y)
+                    if (mb.haveCell)
                     {
-                        //if(mousePosition.x - transform.position.x < -0.5f && mb.border1 != null)
-                        //{
-                        //    Destroy(mb.border1);
-                        //    break;
-                        //}
-                        //else if(mousePosition.x - transform.position.x > -0.5f && mousePosition.x - transform.position.x < 0.5f && mb.border2 != null)
-                        //{
-                        //    Destroy(mb.border2);
-                        //    break;
-                        //}
-                        //else if(mousePosition.x - transform.position.x > 0.5f && mb.border3 != null)
-                        //{
-                        //    Destroy(mb.border3);
-                        //    break;
-                        //}
-                    }
-                    else if (mb.haveBoard && Vector3.Distance(mousePosition, mb.transform.position) <= 0.4f)
-                    {
-                        if(mb.haveCell)
+                        if (mb.cellPrefab.name == "Coin")
                         {
-                            if (mb.cellPrefab.name == "Coin")
-                            {
-                                MapManager.instance.HaveCoin = false;
-                            }
-                            if (mb.cellPrefab.name == "Cell")
-                            {
-                                MapManager.instance.CellCount -= 1;
-                            }
-                            Destroy(mb.cellPrefab);
-                            mb.haveCell = false;
-                            break;
+                            MapManager.instance.HaveCoin = false;
                         }
-                        else
+                        if (mb.cellPrefab.name == "Cell")
                         {
-                            
-                            if (mb.boardPrefab.name == "EndBoard")
-                            {
-                                MapManager.instance.HaveEndboard = false;
-                            }
-                            Board.boards.Remove(mb.boardPrefab.GetComponent<Board>());
-                            Destroy(mb.boardPrefab);
-                            mb.haveBoard = false;
-                            break;
+                            MapManager.instance.CellCount -= 1;
                         }
+                        Destroy(mb.cellPrefab);
+                        mb.haveCell = false;
+                        return;
                     }
                     else
                     {
-                        break;
+
+                        if (mb.boardPrefab.name == "EndBoard")
+                        {
+                            MapManager.instance.HaveEndboard = false;
+                        }
+                        Board.boards.Remove(mb.boardPrefab.GetComponent<Board>());
+                        Destroy(mb.boardPrefab);
+                        mb.haveBoard = false;
+                        return;
                     }
                 }
             }
-            
+            foreach (MapManagerBorder mb in MapManagerBorder.mapManagerBorders)
+            {
+                if (mb.haveBorder && Vector3.Distance(mousePosition, mb.transform.position) <= 0.2f)
+                {
+                    if (mb.haveBorder)
+                    {
+                        Destroy(mb.borderPrefab);
+                        mb.haveBorder = false;
+                    }
+                }
+            }
         }
     }
 
-    //是否有要移动的物体
-    private bool havePrefab = false;
     private GameObject movePrefab;
     private Vector3 position;
+    private bool havePrefab = false;
 
-    //TODO
-    //添加细胞壁
-    void MovePrefab()
+    private void MovePrefab()
     {
         //找到要移动的物体
         if (Input.GetMouseButtonDown(0))
         {
-            foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
+            if (!havePrefab)
             {
-                if (Vector3.Distance(mousePosition, mb.transform.position) <= 0.6f)
+                foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
                 {
-                    if (Vector3.Distance(mousePosition, mb.transform.position) >= 0.4f && mousePosition.y > transform.position.y)
-                    {
-
-                    }
                     if (mb.haveBoard && Vector3.Distance(mousePosition, mb.transform.position) <= 0.4f)
                     {
                         havePrefab = true;
                         movePrefab = mb.haveCell ? mb.cellPrefab : mb.boardPrefab;
                         position = mb.transform.position;
-                        
-                        if(mb.haveCell)
+
+                        if (mb.haveCell)
                         {
                             mb.cellPrefab = null;
                             mb.haveCell = false;
@@ -109,104 +86,180 @@ public class MapManagerPrefab : MonoBehaviour
                             mb.haveBoard = false;
                         }
                         movePrefab.GetComponent<SpriteRenderer>().sortingOrder += 1;
+                        break;
                     }
                 }
             }
+ 
+            if (!havePrefab)
+            {
+                foreach(MapManagerBorder mb in MapManagerBorder.mapManagerBorders)
+                {
+                    if(mb.haveBorder && Vector3.Distance(mousePosition, mb.transform.position) <= 0.2f)
+                    {
+                        havePrefab = true;
+                        movePrefab = mb.borderPrefab;
+                        position = mb.transform.position;
+                        mb.borderPrefab = null;
+                        mb.haveBorder = false;
+                        movePrefab.GetComponent<SpriteRenderer>().sortingOrder += 1;
+                        break;
+                    }
+                }
+            }
+            
         }
         if (havePrefab)
         {
-            MovePrefab(movePrefab);
+            OnMovePrefab(movePrefab, movePrefab.tag);
         }
         if(Input.GetMouseButtonUp(0) && havePrefab)
         {
-            OnEndMove(movePrefab,position);
+            OnEndMove(movePrefab,position,movePrefab.tag);
             havePrefab = false;
         }
     }
 
     //prefab移动的物体
-    //TODO
-    //添加细胞壁
-    void MovePrefab(GameObject prefab)
+    private void OnMovePrefab(GameObject prefab, string tag)
     {
         prefab.transform.position = mousePosition;
-        foreach(MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
+        if(!tag.Equals("Border"))
         {
-            if(((!mb.haveBoard &&prefab.tag == "Board") || (mb.haveBoard && !mb.haveCell && prefab.tag == "Cell"))&& Vector3.Distance(mb.transform.position,prefab.transform.position) < 0.5f)
+            foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
             {
-                if(mb.GetComponent<SpriteRenderer>() == null)
+                if (Vector3.Distance(mb.transform.position, prefab.transform.position) < 0.4f && ((!mb.haveBoard && tag == "Board") || (mb.haveBoard && !mb.haveCell && tag == "Cell")))
                 {
-                    var sr = mb.gameObject.AddComponent<SpriteRenderer>();
-                    sr.sprite = prefab.GetComponent<SpriteRenderer>().sprite;
-                    sr.sortingLayerName = prefab.GetComponent<SpriteRenderer>().sortingLayerName;
-                    sr.sortingOrder = prefab.GetComponent<SpriteRenderer>().sortingOrder - 1;
+                    if (mb.GetComponent<SpriteRenderer>() == null)
+                    {
+                        var sr = mb.gameObject.AddComponent<SpriteRenderer>();
+                        sr.sprite = prefab.GetComponent<SpriteRenderer>().sprite;
+                        sr.sortingLayerName = prefab.GetComponent<SpriteRenderer>().sortingLayerName;
+                        sr.sortingOrder = prefab.GetComponent<SpriteRenderer>().sortingOrder - 1;
+                    }
                 }
-            }
-            else if(prefab.tag == "Border")
-            {
-
-            }
-            else if(mb.GetComponent<SpriteRenderer>() != null)
-            {
-                Destroy(mb.GetComponent<SpriteRenderer>());
-            }           
-        }
-    }
-
-    //TODO
-    //添加细胞壁
-    void OnEndMove(GameObject prefab, Vector3 position)
-    {
-        bool isOnBG = false;
-        prefab.GetComponent<SpriteRenderer>().sortingOrder -= 1;
-        foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
-        {
-            if(Vector3.Distance(mb.transform.position, prefab.transform.position) < 0.5f)
-            {               
-                if (mb.GetComponent<SpriteRenderer>() != null)
+                else if (mb.GetComponent<SpriteRenderer>() != null)
                 {
                     Destroy(mb.GetComponent<SpriteRenderer>());
                 }
-                if(!mb.haveBoard && prefab.tag == "Board") 
+            }
+        }
+        else
+        {
+            foreach (MapManagerBorder mb in MapManagerBorder.mapManagerBorders)
+            {
+                if (Vector3.Distance(mousePosition, mb.transform.position) <= 0.2f && !mb.haveBorder)
                 {
-                    mb.haveBoard = true;
-                    mb.boardPrefab = prefab;
-                    prefab.transform.position = mb.transform.position;
-                    isOnBG = true;
+                    prefab.transform.rotation = mb.transform.rotation;
+                    if (mb.GetComponent<SpriteRenderer>() == null)
+                    {
+                        var sr = mb.gameObject.AddComponent<SpriteRenderer>();
+                        sr.sprite = prefab.GetComponent<SpriteRenderer>().sprite;
+                        sr.sortingLayerName = prefab.GetComponent<SpriteRenderer>().sortingLayerName;
+                        sr.sortingOrder = prefab.GetComponent<SpriteRenderer>().sortingOrder - 1;
+                    }
                 }
-                if (mb.haveBoard && !mb.haveCell && movePrefab.tag == "Cell")
+                else if (mb.GetComponent<SpriteRenderer>() != null)
                 {
-                    mb.haveCell = true;
-                    mb.cellPrefab = prefab;
-                    prefab.transform.position = mb.transform.position;
-                    isOnBG = true;
-                }               
-                break;
+                    Destroy(mb.GetComponent<SpriteRenderer>());
+                }
+            }
+        }       
+    }
+
+    private void OnEndMove(GameObject prefab, Vector3 position, string tag)
+    {
+        bool isOnBG = false;
+        prefab.GetComponent<SpriteRenderer>().sortingOrder -= 1;
+        if (tag != "Border")
+        {
+            foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
+            {
+                if (Vector3.Distance(mb.transform.position, prefab.transform.position) < 0.4f)
+                {
+                    if (mb.GetComponent<SpriteRenderer>() != null)
+                    {
+                        Destroy(mb.GetComponent<SpriteRenderer>());
+                    }
+                    if (!mb.haveBoard && prefab.tag == "Board")
+                    {
+                        mb.haveBoard = true;
+                        mb.boardPrefab = prefab;
+                        prefab.transform.position = mb.transform.position;
+                        isOnBG = true;
+                    }
+                    if (mb.haveBoard && !mb.haveCell && prefab.tag == "Cell")
+                    {
+                        mb.haveCell = true;
+                        mb.cellPrefab = prefab;
+                        prefab.transform.position = mb.transform.position;
+                        isOnBG = true;
+                    }
+                    break;
+                }
+            }
+        }
+        else
+        {
+            foreach (MapManagerBorder mb in MapManagerBorder.mapManagerBorders)
+            {
+                if (Vector3.Distance(mb.transform.position, prefab.transform.position) < 0.2f)
+                {
+                    mb.SetEularAngleZ(prefab);
+                    if (mb.GetComponent<SpriteRenderer>() != null)
+                    {
+                        Destroy(mb.GetComponent<SpriteRenderer>());
+                    }
+                    if (!mb.haveBorder)
+                    {
+                        mb.haveBorder = true;
+                        mb.borderPrefab = prefab;
+                        prefab.transform.position = mb.transform.position;
+                        isOnBG = true;
+                    }
+                    break;
+                }
             }
         }
         if (!isOnBG)
         {
             prefab.transform.position = position;
-            foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
+            if (tag != "Border")
             {
-                if(Vector3.Distance(mb.transform.position,prefab.transform.position) < 0.3f)
+                foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
                 {
-                    if(prefab.tag == "Cell")
+                    if (Vector3.Distance(mb.transform.position, prefab.transform.position) < 0.3f)
                     {
-                        mb.haveCell = true;
-                        mb.cellPrefab = prefab;
-                        break;
+                        if (prefab.tag == "Cell")
+                        {
+                            mb.haveCell = true;
+                            mb.cellPrefab = prefab;
+                            break;
+                        }
+                        else if (prefab.tag == "Board")
+                        {
+                            mb.haveBoard = true;
+                            mb.boardPrefab = prefab;
+                            break;
+                        }
                     }
-                    else if(prefab.tag == "Board")
+                }
+            }
+            else
+            {
+                foreach (MapManagerBorder mb in MapManagerBorder.mapManagerBorders)
+                {
+                    if (Vector3.Distance(mb.transform.position, prefab.transform.position) < 0.2f)
                     {
-                        mb.haveBoard = true;
-                        mb.boardPrefab = prefab;
+                        mb.haveBorder = true;
+                        mb.borderPrefab = prefab;
                         break;
                     }
                 }
             }
         }
     }
+
     private void Update()
     {
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z);

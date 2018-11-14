@@ -82,16 +82,7 @@ public class BlackHole : MapManagerPrefab,ICells ,IPrefab{
             if (Cell.cells.Count != 0 && Coin.coin != null)
             {
                 EatCell();
-            }
-            else
-            {
-                if(SceneManager.GetActiveScene().name != "MapManager")
-                    GameManager.instance.Defeat();
-                else
-                {
-                    MapManagerUI.instance.Defeat();
-                }
-            }
+            }           
             SetBoard();
         }
         else

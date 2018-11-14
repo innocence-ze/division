@@ -143,6 +143,10 @@ public class MapManagerUI : MonoBehaviour {
             mmbg.haveBoard = false;
             mmbg.haveCell = false;
         }
+        foreach(MapManagerBorder mmb in MapManagerBorder.mapManagerBorders)
+        {
+            mmb.haveBorder = false;
+        }
         GetCurrentCanvas();
         currentCanvas.SetActive(false);
 
@@ -153,8 +157,7 @@ public class MapManagerUI : MonoBehaviour {
         shotBackground.GetComponent<Image>().sprite = sprite;
 
         MainCanvas.SetActive(true);
-        if (currentCanvas.name != "Play" && currentCanvas.name != "End")
-            currentButton.GetComponent<Image>().sprite = MapManager.instance.ReadPNG(currentButton.name);
+        currentButton.GetComponent<Image>().sprite = MapManager.instance.ReadPNG(currentButton.name);
 
     }
 
@@ -232,17 +235,9 @@ public class MapManagerUI : MonoBehaviour {
         {
             File.Delete(Application.dataPath + "/Data/" + fileName + ".png");
         }
-        if (File.Exists(Application.dataPath + "/Data/" + fileName + ".png.meta"))
-        {
-            File.Delete(Application.dataPath + "/Data/" + fileName + ".png.meta");
-        }
         if (File.Exists(Application.dataPath + "/Data/" + fileName + ".xml"))
         {
             File.Delete(Application.dataPath + "/Data/" + fileName + ".xml");
-        }
-        if (File.Exists(Application.dataPath + "/Data/" + fileName + ".xml.meta"))
-        {
-            File.Delete(Application.dataPath + "/Data/" + fileName + ".xml.meta");
         }
     }
 

@@ -6,12 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-    [HideInInspector]public static GameManager instance;
+    public static GameManager instance;
 
     [HideInInspector] public List<Direction> stepList = new List<Direction>();
-
-    public string sceneName;
-    public string nextSceneName;
 
     [SerializeField] private GameObject defeat;
     [SerializeField] private GameObject victory;
@@ -24,7 +21,10 @@ public class GameManager : MonoBehaviour {
 
     private void Update()
     {
-
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            print(Board.boards.Count);
+        }
     }
 
     public void Victory()
@@ -45,24 +45,29 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void Quit()
+    public void ReturnChapter()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        Board.boards.Clear();
+        SceneManager.LoadScene(PlayerPrefs.GetString("CurrentChapter"));
     }
 
     public void Restart()
     {
         Board.boards.Clear();
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene("Game");
     }
 
-    public void NextScene()
+    public void NextRound()
     {
         Board.boards.Clear();
-        SceneManager.LoadScene(nextSceneName);
+        if (PlayerPrefs.GetString("CurrentRound")!="12")
+        {
+            var i = int.Parse(PlayerPrefs.GetString("CurrentRound")) + 1;
+            PlayerPrefs.SetString("CurrentRound", i.ToString());
+            SceneManager.LoadScene("Game");
+        }
+        else
+            SceneManager.LoadScene(PlayerPrefs.GetString("CurrentChapter"));
+
     }
 }

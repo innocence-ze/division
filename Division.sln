@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Division", "Assembly-CSharp.csproj", "{B81F2FEC-F461-BA7E-E8AE-6CA700954D3A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{B81F2FEC-F461-BA7E-E8AE-6CA700954D3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Division", "Assembly-CSharp-Editor.csproj", "{B36778F8-5E4C-7CB6-AC71-649B0CFD397D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{B36778F8-5E4C-7CB6-AC71-649B0CFD397D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

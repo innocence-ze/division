@@ -88,8 +88,12 @@ public class Germ : MapManagerPrefab, ICells, IPrefab
 
     void OnDestroy()
     {
-        landedBoard.isUsed = false;
-        landedBoard.cellType = CellType.nothing;
+        if (landedBoard != null)
+        {
+            landedBoard.isUsed = false;
+            landedBoard.cellType = CellType.nothing;
+        }
+        
         germs.Remove(this);
     }
 }

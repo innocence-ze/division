@@ -5,11 +5,10 @@ public class MapManagerPrefab : MonoBehaviour
 {
     private Vector3 mousePosition;
 
-    //TODO
     private void DeletePrefab()
     {
-        if(Input.GetMouseButtonUp(1))
-        {           
+        if(Input.GetMouseButtonUp(0))
+        {
             foreach (MapManagerBackGround mb in MapManagerBackGround.mapManagerBackGrounds)
             {
                 if (mb.haveBoard && Vector3.Distance(mousePosition, mb.transform.position) <= 0.3f)
@@ -263,7 +262,13 @@ public class MapManagerPrefab : MonoBehaviour
     private void Update()
     {
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z);
-        DeletePrefab();
-        MovePrefab();
+        if(MapManagerUI.instance.Tog.isOn)
+        {
+            DeletePrefab();
+        }
+        else
+        {
+            MovePrefab();
+        }
     }
 }

@@ -22,9 +22,22 @@ public enum Direction
 
 public class InputHandle : MonoBehaviour {
 
-    //public Text text;
+    private static InputHandle s_Instance = null;
+    public static InputHandle Instance
+    {
+        get
+        {
+            if (s_Instance == null)
+            {
+                s_Instance = FindObjectOfType(typeof(InputHandle)) as InputHandle;
+            }
+            if (s_Instance == null)
+                Debug.Log("Can't find InputHandle");
+            return s_Instance;
+        }
+    }
 
-	private bool forbidden=false;
+    private bool forbidden=false;
 		
 	Vector2 downPos;
     float angle = 0;
@@ -53,7 +66,8 @@ public class InputHandle : MonoBehaviour {
                 angle = 360 - Vector2.Angle(Vector3.right, deltaPos);
 
             direction = (Direction)(angle / 60);
-            Cell.MoveTo(direction);
+            if((int)direction < 6)
+                Cell.MoveTo(direction);
             //text.text = downPos + "  " + deltaPos + "\n" + angle + "  " + direction;
 
         }
@@ -71,8 +85,8 @@ public class InputHandle : MonoBehaviour {
                     angle = 360 - Vector2.Angle(Vector3.right, deltaPos);
 
                 direction = (Direction)(angle / 60);
-                Cell.MoveTo(direction);
-                //text.text = downPos + "  " + deltaPos + "\n" + angle + "  " + direction;
+                if((int)direction < 6)
+                    Cell.MoveTo(direction);
             }
         }
 

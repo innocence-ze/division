@@ -45,6 +45,7 @@ public class BlackHole : MapManagerPrefab,ICells ,IPrefab{
         {
             if (Vector3.Distance(c.transform.position, transform.position) < 0.1f)
             {
+                c.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
                 c.Health = 0;
                 break;
             }
@@ -53,6 +54,7 @@ public class BlackHole : MapManagerPrefab,ICells ,IPrefab{
         if (Vector3.Distance(Coin.coin.transform.position, transform.position) < 0.1f)
         {
             Destroy(Coin.coin.gameObject);
+            GameManager.instance.Defeat();
         }
         
         if (Germ.germs != null)

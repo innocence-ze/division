@@ -21,7 +21,7 @@ public class MapManager : MonoBehaviour {
         instance = this;
         shotCamera = GameObject.Find("ShotCamera").GetComponent<Camera>();
         //创建后台文件夹
-        DirectoryInfo xmlFolder = new DirectoryInfo(Application.dataPath + "/Data/");
+        DirectoryInfo xmlFolder = new DirectoryInfo(Application.persistentDataPath + "/Data/");
         xmlFolder.Create();
         GameObject[] go = GameObject.FindGameObjectsWithTag("BackGround");
         foreach(var g in go)
@@ -42,7 +42,7 @@ public class MapManager : MonoBehaviour {
     public void SaveXML(string fileName)
     {
         //判断文件及文件夹是否存在，并创建文件
-        string xmlPath = Application.dataPath + "/Data/" + fileName + ".xml";
+        string xmlPath = Application.persistentDataPath + "/Data/" + fileName + ".xml";
 
         XmlDocument xmlDoc = new XmlDocument();
 
@@ -116,7 +116,7 @@ public class MapManager : MonoBehaviour {
     public void ReadXML(string fileName)
     {
 
-        string xmlPath = Application.dataPath + "/Data/" +fileName + ".xml";
+        string xmlPath = Application.persistentDataPath + "/Data/" +fileName + ".xml";
         if (File.Exists(xmlPath))
         {
             XmlDocument xmlName = new XmlDocument();
@@ -355,7 +355,7 @@ public class MapManager : MonoBehaviour {
         Texture2D png = new Texture2D(rt.width, rt.height, TextureFormat.ARGB32, false);
         png.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
         byte[] bytes = png.EncodeToPNG();
-        FileStream file = File.Open(Application.dataPath + "/Data/" + fileName + ".png", FileMode.Create);
+        FileStream file = File.Open(Application.persistentDataPath + "/Data/" + fileName + ".png", FileMode.Create);
         BinaryWriter writer = new BinaryWriter(file);
         writer.Write(bytes);
         file.Close();
@@ -367,7 +367,7 @@ public class MapManager : MonoBehaviour {
     //读取本地PNG图片
     public Sprite ReadPNG(string fileName)
     {
-        FileStream file = new FileStream(Application.dataPath + "/Data/" + fileName + ".png", FileMode.Open, FileAccess.Read);
+        FileStream file = new FileStream(Application.persistentDataPath + "/Data/" + fileName + ".png", FileMode.Open, FileAccess.Read);
         file.Seek(0, SeekOrigin.Begin);
         byte[] bytes = new byte[file.Length];
         file.Read(bytes, 0, (int)file.Length);

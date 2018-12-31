@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Coin : MapManagerPrefab,ICells , IPrefab
 {
@@ -42,19 +43,36 @@ public class Coin : MapManagerPrefab,ICells , IPrefab
 
     public void MoveTo(Direction dir)
     {
-        if (landedBoard.nearBoards[(int)dir] != null && landedBoard.nearBoards[(int)dir].cellType != CellType.cell && landedBoard.nearBoards[(int)dir].cellType != CellType.germ)
+        var nearBoard = landedBoard.nearBoards[(int)dir];
+        if (nearBoard != null && nearBoard.cellType != CellType.cell && nearBoard.cellType != CellType.germ)
         {
             landedBoard.isUsed = false;
             landedBoard.cellType = CellType.nothing;
-            Vector3 position = landedBoard.nearBoards[(int)dir].transform.position;
-            transform.position = position;
-            landedBoard = landedBoard.nearBoards[(int)dir];
+            Vector3 position = nearBoard.transform.position;
+            StartCoroutine(Move(position));
+            landedBoard = nearBoard;
             landedBoard.isUsed = true;
             if(landedBoard.cellType == CellType.nothing)
             {
                 landedBoard.cellType = CellType.coin;
             }
         }
+    }
+
+
+    IEnumerator Move(Vector3 position)
+    {
+        for(; Vector3.Distance(transform.position,position)> 0.1f;)
+        {
+            var x = Mathf.Lerp(transform.position.x, position.x, 0.7f);
+            var y = Mathf.Lerp(transform.position.y, position.y, 0.7f);
+            transform.position = new Vector3(x, y, transform.position.z);
+            InputHandle.Instance.DisableInput();
+            yield return null;
+        }
+        transform.position = position;
+        InputHandle.Instance.EnableInput();
+        yield return null;
     }
 
     // Update is called once per frame
@@ -67,9 +85,13 @@ public class Coin : MapManagerPrefab,ICells , IPrefab
             {
                 Init();
                 fre++;
+                SetBoard();
             }
-
-            SetBoard();
+            if (Vector3.Distance(transform.position, landedBoard.transform.position) > 0.5f)
+                InputHandle.Instance.DisableInput();
+            else
+                InputHandle.Instance.EnableInput();
+            
         }
         else
         {

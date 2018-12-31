@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/MapManager/MapManager.unity
+- path: Assets/Scenes/Chapter/2.unity
   isLoaded: 1
   isActive: 1

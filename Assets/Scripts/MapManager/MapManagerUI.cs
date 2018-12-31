@@ -3,11 +3,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using UnityEngine.SceneManagement;
-
+using DG.Tweening;
 public class MapManagerUI : MonoBehaviour {
 
     public static MapManagerUI instance;
 
+
+    [SerializeField]
+    [Header("【遮罩】")]
+    private Image mask;
     [SerializeField]
     [Header("【选择地板的UI】")]
     private GameObject BoardCanvas;
@@ -35,13 +39,22 @@ public class MapManagerUI : MonoBehaviour {
     [SerializeField]
     [Header("【胜利失败界面的UI】")]
     private GameObject End;
+    [SerializeField]
+    [Header("【删除Toggle】")]
+    private MapToggle tog;
+    
+    public MapToggle Tog { get { return tog; } }
 
     private void Start()
     {
+        mask.DOFade(0, 0.7f).onComplete = delegate ()
+        {
+            mask.raycastTarget = false;
+        };
         instance = this;
         for (int i = 1; i <= 6; i++)
         {
-            string xmlPath = Application.dataPath + "/Data/" + i.ToString() + ".png";
+            string xmlPath = Application.persistentDataPath + "/Data/" + i.ToString() + ".png";
             if (File.Exists(xmlPath))
             {
                 Sprite s = MapManager.instance.ReadPNG(i.ToString());
@@ -58,6 +71,7 @@ public class MapManagerUI : MonoBehaviour {
 
     //当前的场景
     GameObject currentCanvas;
+    [SerializeField]
     GameObject currentButton;
     string fileName;
 
@@ -197,8 +211,7 @@ public class MapManagerUI : MonoBehaviour {
 
     public void OnBeginEdit()
     {
-        //设置文件名字
-        currentButton = EventSystem.current.currentSelectedGameObject;
+        currentButton = EventSystem.current.currentSelectedGameObject.transform.gameObject;
         for (int i = 0; i < 3; i++)
         {
             currentButton.transform.GetChild(i).gameObject.SetActive(true);
@@ -231,13 +244,13 @@ public class MapManagerUI : MonoBehaviour {
         }
         currentButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("MapManager/AddMap");
 
-        if(File.Exists(Application.dataPath + "/Data/" + fileName + ".png"))
+        if(File.Exists(Application.persistentDataPath + "/Data/" + fileName + ".png"))
         {
-            File.Delete(Application.dataPath + "/Data/" + fileName + ".png");
+            File.Delete(Application.persistentDataPath + "/Data/" + fileName + ".png");
         }
-        if (File.Exists(Application.dataPath + "/Data/" + fileName + ".xml"))
+        if (File.Exists(Application.persistentDataPath + "/Data/" + fileName + ".xml"))
         {
-            File.Delete(Application.dataPath + "/Data/" + fileName + ".xml");
+            File.Delete(Application.persistentDataPath + "/Data/" + fileName + ".xml");
         }
     }
 
@@ -248,6 +261,18 @@ public class MapManagerUI : MonoBehaviour {
         while(currentCanvas.GetComponent<Canvas>() == null)
         {
             currentCanvas = currentCanvas.transform.parent.gameObject;
+        }
+    }
+
+    void Update()
+    {
+        if(BoardCanvas.activeSelf || ChoseTypeCanvas.activeSelf || BorderCanvas.activeSelf || CellCanvas.activeSelf)
+        {
+            tog.gameObject.SetActive(true);
+        }
+        else
+        {
+            tog.gameObject.SetActive(false);
         }
     }
 

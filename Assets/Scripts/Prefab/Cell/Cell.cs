@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Cell : MapManagerPrefab ,ICells,IPrefab
 {
+
+    private Animator anim;
     private static int MaxHealth = 2;
 
     // Use this for initialization
@@ -22,9 +24,13 @@ public class Cell : MapManagerPrefab ,ICells,IPrefab
 
     }
 
+    [SerializeField]
+    private Board landedBoard;
+
+    public Board LandBoard { get { return landedBoard; } }
+
+    [SerializeField]
     private int health;
-	//[SerializeField]private Text text;
-	[SerializeField]private Board landedBoard;
 	public int Health
 	{
 		get
@@ -34,11 +40,13 @@ public class Cell : MapManagerPrefab ,ICells,IPrefab
 		set
         {
             health = value;
-			if(health == 0)
-            {
+            anim.SetInteger("Health", health);
+            if (health == 0)
+            {               
                 landedBoard.isUsed = false;
                 landedBoard.cellType = CellType.nothing;
-                Destroy(gameObject);
+                InputHandle.Instance.EnableInput();
+                Destroy(gameObject, 1f);
             }
 		}
 	}
@@ -54,6 +62,7 @@ public class Cell : MapManagerPrefab ,ICells,IPrefab
 
     public void Init()
     {
+        anim = GetComponent<Animator>();
         //Sprite cell2 = Resources.Load<Sprite>("Material/Cell2");
         if(gameObject.name == "Cell2")
         {
@@ -86,7 +95,8 @@ public class Cell : MapManagerPrefab ,ICells,IPrefab
         }
     }
 	
-	void DivideTo(Vector2 position)
+    //细胞朝固定方向移动
+	public void DivideTo(Vector2 position)
 	{
 
         Vector3 pos = new Vector3(position.x, position.y, transform.position.z);
@@ -96,57 +106,55 @@ public class Cell : MapManagerPrefab ,ICells,IPrefab
         Health--;
 	}
 	
-	bool canMove=false;
+    [SerializeField]
+	bool isMove=false;
     //判断细胞是否可以移动
 	public static void MoveTo(Direction dir)
 	{
 		foreach(Cell cell in cells)
 		{
-            //判断细胞的目的地是否为null或是否已被占用
-            if (cell.landedBoard.nearBoards[(int)dir] == null || (cell.landedBoard.nearBoards[(int)dir].isUsed && cell.landedBoard.nearBoards[(int)dir].cellType == CellType.cell) )           
+            var nearBoard = cell.landedBoard.nearBoards[(int)dir];
+            //判断细胞的目的地是否为null
+            if (nearBoard == null)           
             {
-                cell.canMove = false;
+                cell.isMove = false;
             }
-           
+
+            //判断细胞的目的地是否为细胞
+            else if(nearBoard.isUsed && nearBoard.cellType == CellType.cell)
+            {
+                cell.isMove = false;
+            }
+
             //判断细胞的目的地是否为硬币
-            else if (cell.landedBoard.nearBoards[(int)dir].isUsed && (cell.landedBoard.nearBoards[(int)dir].cellType == CellType.coin || cell.landedBoard.nearBoards[(int)dir].cellType == CellType.germ))
+            else if (nearBoard.isUsed && (int)nearBoard.cellType >= 4)
             {
                 //判断硬币被推到的地方是否为null或者已被占用
-                if (cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir] == null || (cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir].isUsed && (cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir].cellType == CellType.cell || cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir].cellType == CellType.coin || cell.landedBoard.nearBoards[(int)dir].nearBoards[(int)dir].cellType == CellType.germ)))
+                if (nearBoard.nearBoards[(int)dir] == null)
                 {
-                    cell.canMove = false;
+                    cell.isMove = false;
+                }
+                else if(nearBoard.nearBoards[(int)dir].isUsed && (int)nearBoard.nearBoards[(int)dir].cellType >= 3)
+                {
+                    cell.isMove = false;
                 }
                 else
-                {
-                    if(cell.landedBoard.nearBoards[(int)dir].cellType == CellType.coin)
-                        Coin.coin.MoveTo(dir);
-                    if (cell.landedBoard.nearBoards[(int)dir].cellType == CellType.germ)
-                    {
-                        foreach(Germ germ in Germ.germs)
-                        {
-                            if(Vector3.Distance(germ.transform.position, cell.landedBoard.nearBoards[(int)dir].transform.position) < 0.3f)
-                            {
-                                germ.MoveTo(dir);
-                            }
-                        }
-                    }
-                    cell.canMove = true;
+                {                   
+                    cell.anim.SetInteger("PushType", (int)nearBoard.cellType);
+                    cell.isMove = true;
                 }
 
             }
 
             else
             {
-                cell.canMove = true;
+                cell.isMove = true;
             }
+
+            cell.anim.SetBool("IsMove", cell.isMove);
+            cell.anim.SetInteger("MoveDir", (int)dir);
         }
-		foreach(Cell cell in cells)
-		{
-            if (cell.canMove)
-            {
-                cell.DivideTo(cell.landedBoard.nearBoards[(int)dir].transform.position);
-            }
-		}
+        		
 	}
 
 	void OnDestroy()
@@ -156,6 +164,8 @@ public class Cell : MapManagerPrefab ,ICells,IPrefab
 
     public virtual void SetBoard()
     {
+        if (Health == 0)
+            return;
         foreach (Board b in Board.boards)
         {
             Vector3 pos = transform.position;

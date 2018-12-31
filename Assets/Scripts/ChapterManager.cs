@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class ChapterManager : MonoBehaviour {
 
-    private void Start()
+    private void Awake()
     {
         PlayerPrefs.SetString("CurrentChapter", SceneManager.GetActiveScene().name);
     }

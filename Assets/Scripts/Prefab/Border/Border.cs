@@ -53,10 +53,9 @@ public class Border : MapManagerPrefab ,IPrefab
         }
     }
 
-    void InitBorder(BorderDirection bd)
+    void ChangeBoard(BorderDirection bd)
     {
         int dir;
-        FindBoard();
         if (nearBoards[0] != null && nearBoards[1] != null)
         {
             if ((int)bd < 3)
@@ -76,12 +75,13 @@ public class Border : MapManagerPrefab ,IPrefab
                 dir = dir - 3;
                 nearBoards[1].GetComponent<Board>().ChangeBoard((Direction)dir);
             }
-        }           
+        }      
     }
 
     public void Init()
     {
-        InitBorder(borderType);
+        FindBoard();
+        ChangeBoard(borderType);
     }
 
     // Use this for initialization
@@ -103,11 +103,16 @@ public class Border : MapManagerPrefab ,IPrefab
                 Init();
                 fre++;
             }
+            else
+            {
+                ChangeBoard(borderType);
+            }
         }
         else
         {
             fre = 0;
         }
+
     }
 
     public bool HaveNearBoard()

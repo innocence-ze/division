@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System.Collections;
+
 
 public class Germ : MapManagerPrefab, ICells, IPrefab
 {
@@ -30,7 +32,7 @@ public class Germ : MapManagerPrefab, ICells, IPrefab
             landedBoard.isUsed = false;
             landedBoard.cellType = CellType.nothing;
             Vector3 position = landedBoard.nearBoards[(int)dir].transform.position;
-            transform.position = position;
+            StartCoroutine(Move(position));
             landedBoard = landedBoard.nearBoards[(int)dir];
             landedBoard.isUsed = true;
             if (landedBoard.cellType == CellType.nothing)
@@ -38,6 +40,21 @@ public class Germ : MapManagerPrefab, ICells, IPrefab
                 landedBoard.cellType = CellType.germ;
             }
         }
+    }
+
+    IEnumerator Move(Vector3 position)
+    {
+        for (; Vector3.Distance(transform.position, position) > 0.1f;)
+        {
+            var x = Mathf.Lerp(transform.position.x, position.x, 0.7f);
+            var y = Mathf.Lerp(transform.position.y, position.y, 0.7f);
+            transform.position = new Vector3(x, y, transform.position.z);
+            InputHandle.Instance.DisableInput();
+            yield return null;
+        }
+        transform.position = position;
+        InputHandle.Instance.EnableInput();
+        yield return null;
     }
 
     public void SetBoard()
@@ -67,9 +84,10 @@ public class Germ : MapManagerPrefab, ICells, IPrefab
             {
                 Init();
                 fre++;
+                SetBoard();
             }
 
-            SetBoard();
+           
             if(landedBoard.GetComponent<EndBoard>() != null)
             {
                 if (SceneManager.GetActiveScene().name != "MapManager")

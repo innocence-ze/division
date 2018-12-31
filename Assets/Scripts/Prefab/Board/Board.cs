@@ -4,11 +4,11 @@ using UnityEngine;
 
 public enum CellType
 {
-    nothing,
-    cell,
-    coin,
+    nothing,   
     blackHole,
     wormHole,
+    cell,
+    coin,
     germ,
 }
 
